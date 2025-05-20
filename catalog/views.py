@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse,HttpResponse
+from django.http import JsonResponse, HttpResponse
 from django.db.models import Q
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 from .filters import BookFilter
 from .models import Book, Author, Publisher, BestsellerAccolade
 from django.template.loader import render_to_string
 
 from django.db.models import Prefetch
 from .forms import BookForm, AuthorForm, PublisherForm, BestsellerAccoladeForm, DateRangeForm
+@login_required
 def home(request):
     books = Book.objects.select_related('author', 'publisher').prefetch_related(
         Prefetch('bestselleraccolade_set', queryset=BestsellerAccolade.objects.all())
@@ -130,18 +132,22 @@ def home(request):
 
     return render(request, 'home.html', context)
     
+@login_required
 def author_list(request):
     authors = Author.objects.all()
     return render(request, 'author_list.html', {'authors': authors})
 
+@login_required
 def publisher_list(request):
     publishers = Publisher.objects.all()
     return render(request, 'publisher_list.html', {'publishers': publishers})
 
+@login_required
 def bestseller_list(request):
     bestsellers = BestsellerAccolade.objects.select_related('book').all()
     return render(request, 'bestseller_list.html', {'bestsellers': bestsellers})
 
+@login_required
 def add_entity(request, entity_form, template, redirect_url):
     if request.method == 'POST':
         form = entity_form(request.POST)
@@ -152,19 +158,24 @@ def add_entity(request, entity_form, template, redirect_url):
         form = entity_form()
     return render(request, template, {'form': form})
 
+@login_required
 def add_author(request):
     return add_entity(request, AuthorForm, 'add_author.html', 'authors')
 
+@login_required
 def add_publisher(request):
     return add_entity(request, PublisherForm, 'add_publisher.html', 'publishers')
 
+@login_required
 def add_book(request):
     return add_entity(request, BookForm, 'add_book.html', 'home')
 
+@login_required
 def add_bestseller(request):
     return add_entity(request, BestsellerAccoladeForm, 'add_bestseller.html', 'bestsellers')
 
 @require_POST
+@login_required
 def update_book_ajax(request, book_id):
     try:
         book = Book.objects.get(pk=book_id)
@@ -176,6 +187,7 @@ def update_book_ajax(request, book_id):
 
 # views.py
 
+@login_required
 def ajax_search_books(request):
     q = request.GET.get('q', '')
     author_id = request.GET.get('author')
@@ -191,6 +203,7 @@ def ajax_search_books(request):
     return JsonResponse([{'id': item['id'], 'text': item['title']} for item in results], safe=False)
 
 
+@login_required
 def ajax_search_authors(request):
     q = request.GET.get('q', '')
     book_id = request.GET.get('book')
@@ -207,6 +220,7 @@ def ajax_search_authors(request):
     return JsonResponse([{'id': item['id'], 'text': item['name']} for item in authors], safe=False)
 
 
+@login_required
 def ajax_search_publishers(request):
     q = request.GET.get('q', '')
     book_id = request.GET.get('book')
@@ -223,6 +237,7 @@ def ajax_search_publishers(request):
     return JsonResponse([{'id': item['id'], 'text': item['name']} for item in publishers], safe=False)
 
 
+@login_required
 def save_book(request, book_id=None):
     if request.method == 'POST':
         instance = Book.objects.get(id=book_id) if book_id else None
@@ -248,6 +263,7 @@ def save_book(request, book_id=None):
 
         return JsonResponse({'success': False, 'errors': form.errors}, status=400)
 
+@login_required
 def get_book_data(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     accolades = list(book.bestselleraccolade_set.values_list('category', flat=True))
@@ -261,17 +277,15 @@ def get_book_data(request, book_id):
     }
     return JsonResponse(data)
 
+@login_required
 def ajax_get_accolades(request):
     accolades = BestsellerAccolade.objects.values_list('category', flat=True).distinct()
     data = [{'id': accolade, 'text': accolade} for accolade in accolades]
     return JsonResponse(data, safe=False)
 
-from django.http import JsonResponse
-from django.views.decorators.http import require_POST
-from django.views.decorators.csrf import csrf_protect
-
 @require_POST
 @csrf_protect
+@login_required
 def delete_book_ajax(request, book_id):
     try:
         book = Book.objects.get(pk=book_id)
