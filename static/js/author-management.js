@@ -1,7 +1,7 @@
 // Author management functionality
 
-let currentSortBy = '';
-let currentSortDir = '';
+var currentSortBy = '';
+var currentSortDir = '';
 
 function initializeAuthorPage(sortBy, sortDir) {
     currentSortBy = sortBy;
@@ -141,10 +141,10 @@ $(document).on('click', '.btn-favorite-author', function(e) {
     });
 });
 
-// Simple search
+// Simple search submits the combined search so filters and URL update
 $(document).on('submit', '#author-search-form', function(e) {
     e.preventDefault();
-    performAuthorSearch();
+    performCombinedAuthorSearch();
 });
 
 function performAuthorSearch() {
@@ -164,19 +164,17 @@ function performAuthorSearch() {
     });
 }
 
-
 // Remove filter
 $(document).on('click', '.remove-author-filter', function(e) {
     e.preventDefault();
     const filter = $(this).data('filter');
     let params = new URLSearchParams(window.location.search);
     params.delete(filter);
+    // Reset to first page when changing filters
+    params.set('page', 1);
     window.location.href = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
 });
 
-$('#authors-reset-btn, #authors-quick-reset-btn').on('click', function() {
-    window.location.href = window.location.pathname;
-});
 
 // Remove author from favorites on profile page
 $(document).on('click', '.btn-remove-favorite-author', function(e) {
@@ -305,6 +303,13 @@ $(document).on('click', '#authors-reset-btn', function() {
 });
 
 $(document).on('click', '#authors-reset-all-btn', function() {
+    // Clear simple search field and advanced search inputs
+    $('#author-search-form input[name="simple_search"]').val('');
+    $('#author-book-select').val(null).trigger('change.select2');
+    $('#author-publisher-select').val(null).trigger('change.select2');
+    $('input[name="publish_date_after"]').val('');
+    $('input[name="publish_date_before"]').val('');
+    $('input[name="accolades"]').prop('checked', false);
     window.location.href = window.location.pathname;
 });
 
