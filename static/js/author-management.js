@@ -1,7 +1,7 @@
 // Author management functionality
 
-let currentSortBy = '';
-let currentSortDir = '';
+var currentSortBy = '';
+var currentSortDir = '';
 
 function initializeAuthorPage(sortBy, sortDir) {
     currentSortBy = sortBy;
@@ -147,6 +147,22 @@ $(document).on('submit', '#author-search-form', function(e) {
     performCombinedAuthorSearch();
 });
 
+function performAuthorSearch() {
+    const query = $('#author-search-form input[name="simple_search"]').val();
+    const params = new URLSearchParams();
+    if (query) params.append('simple_search', query);
+    $.ajax({
+        url: window.location.pathname,
+        type: 'get',
+        data: params.toString(),
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        success: function(data) {
+            $('#author-results').html(data);
+            updateAuthorFilters(params);
+        },
+        error: function() { alert('Error retrieving authors.'); }
+    });
+}
 
 // Remove filter
 $(document).on('click', '.remove-author-filter', function(e) {
@@ -294,10 +310,6 @@ $(document).on('click', '#authors-reset-all-btn', function() {
     $('input[name="publish_date_after"]').val('');
     $('input[name="publish_date_before"]').val('');
     $('input[name="accolades"]').prop('checked', false);
-    window.location.href = window.location.pathname;
-});
-
-$(document).on('click', '#authors-quick-reset-btn', function() {
     window.location.href = window.location.pathname;
 });
 
