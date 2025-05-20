@@ -144,37 +144,32 @@ $(document).on('click', '.btn-favorite-author', function(e) {
 // Simple search
 $(document).on('submit', '#author-search-form', function(e) {
     e.preventDefault();
-    performAuthorSearch();
+    // Trigger the combined search routine so all UI elements update
+    $('#author-search-btn').trigger('click');
 });
-
-function performAuthorSearch() {
-    const query = $('#author-search-form input[name="simple_search"]').val();
-    const params = new URLSearchParams();
-    if (query) params.append('simple_search', query);
-    $.ajax({
-        url: window.location.pathname,
-        type: 'get',
-        data: params.toString(),
-        headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        success: function(data) {
-            $('#author-results').html(data);
-            updateAuthorFilters(params);
-        },
-        error: function() { alert('Error retrieving authors.'); }
-    });
-}
-
 
 // Remove filter
 $(document).on('click', '.remove-author-filter', function(e) {
     e.preventDefault();
     const filter = $(this).data('filter');
-    let params = new URLSearchParams(window.location.search);
-    params.delete(filter);
-    window.location.href = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+    const params = new URLSearchParams(window.location.search);
+
+    if (filter === 'accolades') {
+        const value = $(this).data('value');
+        let accolades = params.getAll('accolades');
+        accolades = accolades.filter(item => item !== value);
+        params.delete('accolades');
+        accolades.forEach(a => params.append('accolades', a));
+    } else {
+        params.delete(filter);
+    }
+
+    params.set('page', 1);
+    window.location.href = window.location.pathname + '?' + params.toString();
 });
 
-$('#authors-reset-btn, #authors-quick-reset-btn').on('click', function() {
+// Quick reset from the active filters section
+$('#authors-quick-reset-btn').on('click', function() {
     window.location.href = window.location.pathname;
 });
 
