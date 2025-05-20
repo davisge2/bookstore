@@ -29,7 +29,11 @@
                 <tbody>
                     {% for book in favorite_books %}
                     <tr>
-                        <td></td>
+                        <td>
+                            <button class="btn btn-danger btn-sm btn-remove-favorite" data-book-id="{{ book.id }}" data-book-title="{{ book.title }}" title="Remove">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
                         <td>{{ book.title }}</td>
                         <td>{{ book.author }}</td>
                         <td>{{ book.publisher }}</td>
