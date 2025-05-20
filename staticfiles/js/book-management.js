@@ -227,7 +227,7 @@ $(document).on('click', '.btn-delete-book', function(e) {
     if (confirm(`Are you sure you want to delete the book "${bookTitle}"? This action cannot be undone.`)) {
         // User confirmed, proceed with deletion
         $.ajax({
-            // url: `/ajax/delete-book/${bookId}/`,  commented for testing
+            url: `/ajax/delete-book/${bookId}/`,
             method: 'POST',
             headers: {
                 'X-CSRFToken': getCsrfToken()

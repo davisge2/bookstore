@@ -64,6 +64,13 @@ def home(request):
     if publisher_id:
         filtered_qs = filtered_qs.filter(publisher_id=publisher_id)
 
+    if simple_search:
+        filtered_qs = filtered_qs.filter(
+            Q(title__icontains=simple_search) |
+            Q(author__name__icontains=simple_search) |
+            Q(publisher__name__icontains=simple_search)
+        )
+
     # Apply date range and accolade filters
     if date_range_form.is_valid():
         publish_date_after = date_range_form.cleaned_data.get('publish_date_after')
@@ -272,15 +279,19 @@ def get_book_data(request, book_id):
         'title': book.title,
         'author': {'id': book.author.id, 'text': book.author.name},
         'publisher': {'id': book.publisher.id, 'text': book.publisher.name},
-        # 'publish_date': book.publish_date.strftime('%Y-%m-%d'),
+        'publish_date': book.publish_date.strftime('%Y-%m-%d'),
         'accolades': accolades,
     }
     return JsonResponse(data)
 
 @login_required
 def ajax_get_accolades(request):
-    accolades = BestsellerAccolade.objects.values_list('category', flat=True).distinct()
-    data = [{'id': accolade, 'text': accolade} for accolade in accolades]
+    accolades = set(
+        BestsellerAccolade.objects.values_list('category', flat=True).distinct()
+    )
+    # Include all defined choices even if not present in the database
+    accolades.update([choice[0] for choice in BestsellerAccolade.ACCOLADE_CHOICES])
+    data = [{'id': accolade, 'text': accolade} for accolade in sorted(accolades)]
     return JsonResponse(data, safe=False)
 
 @require_POST

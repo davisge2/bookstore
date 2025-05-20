@@ -27,6 +27,7 @@ class BestsellerAccolade(models.Model):
     ACCOLADE_CHOICES = [
         ('Top 5', 'Top 5'),
         ('Top 10', 'Top 10'),
+        ('Top 25', 'Top 25'),
     ]
     
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
