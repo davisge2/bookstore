@@ -36,7 +36,7 @@ def register(request):
                 fail_silently=True,
             )
             messages.success(request, 'Registration successful.')
-            return redirect('home')
+            return redirect('books')
     else:
         form = UserRegistrationForm()
     return render(request, 'registration/register.html', {'form': form})
