@@ -20,25 +20,21 @@ def register(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active = False
+            user.is_active = True
             user.save()
-            token = default_token_generator.make_token(user)
-            uid = urlsafe_base64_encode(force_bytes(user.pk))
-            activation_link = request.build_absolute_uri(
-                f"/accounts/activate/{uid}/{token}/"
-            )
+            login(request, user)
             message = render_to_string('registration/activation_email.txt', {
                 'user': user,
-                'activation_link': activation_link,
             })
             send_mail(
-                'Activate your account',
+                'Welcome to Bookstore',
                 message,
                 settings.DEFAULT_FROM_EMAIL,
                 [user.email],
+                fail_silently=True,
             )
-            messages.success(request, 'Registration successful. Check your email to activate your account.')
-            return redirect('login')
+            messages.success(request, 'Registration successful.')
+            return redirect('home')
     else:
         form = UserRegistrationForm()
     return render(request, 'registration/register.html', {'form': form})
