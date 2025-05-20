@@ -1,0 +1,4 @@
+Hello {{ user.username }},
+
+Please activate your account by visiting the following link:
+{{ activation_link }}

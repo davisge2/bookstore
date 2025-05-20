@@ -10,6 +10,7 @@ This project is a small Django application used to manage books, authors and pub
 - AJAX modals for creating and updating books without leaving the page.
 - Dynamic search fields backed by [Select2](https://select2.org/).
 - Example fixtures to populate the database with demo data located in `catalog/fixtures`.
+- Built-in authentication with registration, profile management and password reset.
 
 The models used by the catalog are defined in `catalog/models.py`:
 
@@ -120,6 +121,7 @@ WHITENOISE_USE_FINDERS = True
    python manage.py runserver
    ```
 4. Open your browser at `http://localhost:8000/` to explore the catalog.
+5. Email confirmations and password reset links are printed to the console using Django's console email backend.
 
 ## Requirements
 
