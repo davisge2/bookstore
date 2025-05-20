@@ -89,6 +89,9 @@
           <button class="btn btn-danger btn-sm btn-delete-book" data-book-id="{{ book.id }}" data-book-title="{{ book.title }}" title="Delete">
             <i class="fa fa-trash"></i>
           </button>
+          <button class="btn btn-default btn-sm btn-favorite-book" data-book-id="{{ book.id }}" title="Favorite">
+            <i class="fa {% if book.id in favorite_ids %}fa-star text-warning{% else %}fa-star-o{% endif %}"></i>
+          </button>
         </td>
         <td>{{ book.title }}</td>
         <td>{{ book.author.name }}</td>

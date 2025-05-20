@@ -252,6 +252,28 @@ $(document).on('click', '.btn-delete-book', function(e) {
     }
 });
 
+/**
+ * Toggle favorite book
+ */
+$(document).on('click', '.btn-favorite-book', function(e) {
+    e.preventDefault();
+    const btn = $(this);
+    const bookId = btn.data('book-id');
+    $.ajax({
+        url: `/accounts/favorite/${bookId}/`,
+        method: 'POST',
+        headers: { 'X-CSRFToken': getCsrfToken() },
+        success: function(data) {
+            const icon = btn.find('i');
+            if (data.action === 'added') {
+                icon.removeClass('fa-star-o').addClass('fa-star text-warning');
+            } else {
+                icon.removeClass('fa-star text-warning').addClass('fa-star-o');
+            }
+        }
+    });
+});
+
 // === SEARCHING AND FILTERING ===
 
 /**
