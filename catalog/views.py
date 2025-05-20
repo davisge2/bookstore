@@ -143,17 +143,63 @@ def home(request):
         html = render_to_string('partials/book_list.html', context, request=request)
         return HttpResponse(html)
 
-    return render(request, 'home.html', context)
+    return render(request, 'books.html', context)
     
 @login_required
 def author_list(request):
-    authors = Author.objects.all()
-    return render(request, 'author_list.html', {'authors': authors})
+    authors = (
+        Author.objects
+        .annotate(
+            book_count=Count('book'),
+            top5_count=Count(
+                'book__bestselleraccolade',
+                filter=Q(book__bestselleraccolade__category='Top 5')
+            ),
+            top10_count=Count(
+                'book__bestselleraccolade',
+                filter=Q(book__bestselleraccolade__category='Top 10')
+            )
+        )
+    )
+
+    simple_search = request.GET.get('simple_search', '')
+    if simple_search:
+        authors = authors.filter(name__icontains=simple_search)
+
+    paginator = Paginator(authors, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'authors': page_obj,
+        'simple_search': simple_search,
+    }
+    if request.user.is_authenticated:
+        context['favorite_ids'] = list(request.user.profile.favorite_authors.values_list('id', flat=True))
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        html = render_to_string('partials/author_list.html', context, request=request)
+        return HttpResponse(html)
+
+    return render(request, 'authors.html', context)
 
 @login_required
 def publisher_list(request):
-    publishers = Publisher.objects.all()
-    return render(request, 'publisher_list.html', {'publishers': publishers})
+    publishers = (
+        Publisher.objects
+        .annotate(
+            book_count=Count('book'),
+            top5_count=Count(
+                'book__bestselleraccolade',
+                filter=Q(book__bestselleraccolade__category='Top 5')
+            ),
+            top10_count=Count(
+                'book__bestselleraccolade',
+                filter=Q(book__bestselleraccolade__category='Top 10')
+            )
+        )
+    )
+    return render(request, 'publishers.html', {'publishers': publishers})
 
 @login_required
 def bestseller_list(request):
@@ -181,11 +227,45 @@ def add_publisher(request):
 
 @login_required
 def add_book(request):
-    return add_entity(request, BookForm, 'add_book.html', 'home')
+    return add_entity(request, BookForm, 'add_book.html', 'books')
 
 @login_required
 def add_bestseller(request):
     return add_entity(request, BestsellerAccoladeForm, 'add_bestseller.html', 'bestsellers')
+
+@login_required
+def save_author(request, author_id=None):
+    if request.method == 'POST':
+        instance = Author.objects.get(id=author_id) if author_id else None
+        form = AuthorForm(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+
+@login_required
+def get_author_data(request, author_id):
+    author = get_object_or_404(Author, id=author_id)
+    data = {
+        'id': author.id,
+        'name': author.name,
+        'bio': author.bio,
+    }
+    return JsonResponse(data)
+
+@require_POST
+@csrf_protect
+@login_required
+def delete_author_ajax(request, author_id):
+    try:
+        author = Author.objects.get(pk=author_id)
+        name = author.name
+        author.delete()
+        return JsonResponse({'status': 'success', 'message': f'Author "{name}" has been deleted.'})
+    except Author.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Author not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 @require_POST
 @login_required

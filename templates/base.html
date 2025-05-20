@@ -21,11 +21,13 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/">Bookstore</a>
+                <a class="navbar-brand" href="{% url 'books' %}">Bookstore</a>
             </div>
             <ul class="nav navbar-nav navbar-right" style="margin-right:10px;">
                 {% if user.is_authenticated %}
-                    <li><a href="/">Home</a></li>
+                    <li><a href="{% url 'books' %}">Books</a></li>
+                    <li><a href="{% url 'authors' %}">Authors</a></li>
+                    <li><a href="{% url 'publishers' %}">Publishers</a></li>
                     <li><a href="{% url 'profile' %}">Profile</a></li>
                     <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
@@ -52,6 +54,8 @@
 
     <!-- Our consolidated book management JS -->
     <script src="{% static 'js/book-management.js' %}"></script>
+    <!-- Author management JS -->
+    <script src="{% static 'js/author-management.js' %}"></script>
     
     {% block scripts %}{% endblock %}
 </body>
