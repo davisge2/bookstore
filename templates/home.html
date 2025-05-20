@@ -2,11 +2,22 @@
 {% load static %}
 {% load url_tags %}
 
+<<<<<<< HEAD
+{% block extra_css %}
+=======
+>>>>>>> ea2f2bf884fed3f1307223fbe3d2a155b756b04c
 <style>
   .content-container {display:flex;width:100%;gap:20px;}
   .book-list-container {flex:3;}
   .analytics-sidebar {flex:2;position:sticky;top:20px;height:calc(100vh - 40px);overflow-y:auto;padding-right:10px;}
+<<<<<<< HEAD
+  @media (max-width: 992px){
+    .content-container{flex-direction:column;}
+    .analytics-sidebar{height:auto;position:static;}
+  }
+=======
   @media (max-width: 992px){.content-container{flex-direction:column;}.analytics-sidebar{height:auto;position:static;}}
+>>>>>>> ea2f2bf884fed3f1307223fbe3d2a155b756b04c
   .mini-section{background-color:white;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.05);margin-bottom:20px;padding:15px;}
   .mini-section-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f0f0f0;padding-bottom:10px;margin-bottom:15px;}
   .mini-section-header h3{font-size:1rem;font-weight:600;margin:0;}
@@ -21,11 +32,14 @@
   .mini-list .name{font-weight:500;}
   .mini-list .count{background:#6772e5;color:white;padding:2px 8px;border-radius:12px;font-size:.8rem;}
 </style>
+<<<<<<< HEAD
+{% endblock %}
+=======
+>>>>>>> ea2f2bf884fed3f1307223fbe3d2a155b756b04c
 
 {% block content %}
 <div class="container-fluid">
 <h2>Books (Advanced Search, Filter & Pagination)</h2>
-<!-- Simple search form -->
 <div class="row mb-3">
   <div class="col-md-8">
     <form id="simple-search-form" class="form-inline">
@@ -37,7 +51,6 @@
       </div>
     </form>
   </div>
-<!-- Update the button section in home.html -->
 <div class="col-md-4 text-right">
   <button class="btn btn-success btn-add-book">Add New Book</button>
   <button type="button" class="btn btn-info" data-toggle="modal" data-target="#searchModal">
@@ -48,7 +61,6 @@
   </button>
 </div>
 </div>
-<!-- Correct Bootstrap 3 Modal -->
 <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -73,7 +85,6 @@
       <select id="publisher-select" name="publisher" class="form-control" style="width:100%;"></select>
     </div>
     
-    <!-- Add date range filter -->
     <div class="form-group">
       <label>Publish Date Range:</label>
       <div class="row">
@@ -86,7 +97,6 @@
       </div>
     </div>
     
-<!-- Add multiple accolades filter -->
 <div class="form-group">
   <label>Multiple Accolades (OR filter):</label>
   <div class="checkbox">
@@ -109,7 +119,6 @@
   </div>
 </div>
 
-<!-- Add/Edit Book Modal -->
 <div class="modal fade" id="bookModal" tabindex="-1" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -144,7 +153,6 @@
             <div class="form-group">
               <label>Bestseller Accolades</label>
               <select id="accolades-select" name="accolades" multiple class="form-control" style="width:100%;">
-                <!-- Dynamic Options Loaded via JS -->
               </select>
             </div>
 
@@ -158,7 +166,6 @@
     </div>
   </div>
 </div>
-<!-- Update the active filters section in home.html -->
 <div id="active-filters" class="well well-sm" style="margin-top: 20px;">
   <h4>Active Filters:</h4>
   <div class="row">
@@ -261,7 +268,6 @@
 {% endblock %}
 
 {% block scripts %}
-<!-- Initialize filter values and sorting for JavaScript -->
 <script>
     // Pass initial values to the JavaScript
     window.initialFilterValues = {
