@@ -274,6 +274,29 @@ $(document).on('click', '.btn-favorite-book', function(e) {
     });
 });
 
+/**
+ * Remove a book from favorites on the profile page
+ */
+$(document).on('click', '.btn-remove-favorite', function(e) {
+    e.preventDefault();
+    const btn = $(this);
+    const bookId = btn.data('book-id');
+    const bookTitle = btn.data('book-title');
+    if (confirm(`Remove "${bookTitle}" from favorites?`)) {
+        $.ajax({
+            url: `/accounts/favorite/${bookId}/`,
+            method: 'POST',
+            headers: { 'X-CSRFToken': getCsrfToken() },
+            success: function() {
+                btn.closest('tr').fadeOut(300, function() { $(this).remove(); });
+            },
+            error: function() {
+                alert('Error removing favorite.');
+            }
+        });
+    }
+});
+
 // === SEARCHING AND FILTERING ===
 
 /**
