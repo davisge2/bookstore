@@ -136,6 +136,9 @@ def home(request):
         'simple_search': simple_search,
     }
 
+    if request.user.is_authenticated:
+        context['favorite_ids'] = list(request.user.profile.favorite_books.values_list('id', flat=True))
+
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         html = render_to_string('partials/book_list.html', context, request=request)
         return HttpResponse(html)

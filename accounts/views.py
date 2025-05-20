@@ -4,15 +4,17 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_str
 
-from .forms import UserRegistrationForm, UserUpdateForm
+from .forms import UserRegistrationForm, UserUpdateForm, ProfileUpdateForm
+from catalog.models import Book
 from django.core.mail import send_mail
 from django.conf import settings
+from django.views.decorators.http import require_POST
 
 
 def register(request):
@@ -58,11 +60,35 @@ def activate(request, uidb64, token):
 @login_required
 def profile(request):
     if request.method == 'POST':
-        form = UserUpdateForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
+        user_form = UserUpdateForm(request.POST, instance=request.user)
+        profile_form = ProfileUpdateForm(request.POST, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
             messages.success(request, 'Profile updated.')
             return redirect('profile')
     else:
-        form = UserUpdateForm(instance=request.user)
-    return render(request, 'registration/profile.html', {'form': form})
+        user_form = UserUpdateForm(instance=request.user)
+        profile_form = ProfileUpdateForm(instance=request.user.profile)
+
+    favorite_books = request.user.profile.favorite_books.select_related('author', 'publisher')
+    context = {
+        'form': user_form,
+        'profile_form': profile_form,
+        'favorite_books': favorite_books,
+    }
+    return render(request, 'registration/profile.html', context)
+
+
+@login_required
+@require_POST
+def toggle_favorite_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    profile = request.user.profile
+    if book in profile.favorite_books.all():
+        profile.favorite_books.remove(book)
+        action = 'removed'
+    else:
+        profile.favorite_books.add(book)
+        action = 'added'
+    return JsonResponse({'status': 'success', 'action': action})
