@@ -8,6 +8,7 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
     favorite_books = models.ManyToManyField('catalog.Book', blank=True)
+    favorite_authors = models.ManyToManyField('catalog.Author', blank=True)
 
     def __str__(self):
         return self.user.username

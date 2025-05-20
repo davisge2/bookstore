@@ -11,7 +11,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_str
 
 from .forms import UserRegistrationForm, UserUpdateForm, ProfileUpdateForm
-from catalog.models import Book
+from catalog.models import Book, Author
 from django.core.mail import send_mail
 from django.conf import settings
 from django.views.decorators.http import require_POST
@@ -72,10 +72,12 @@ def profile(request):
         profile_form = ProfileUpdateForm(instance=request.user.profile)
 
     favorite_books = request.user.profile.favorite_books.select_related('author', 'publisher')
+    favorite_authors = request.user.profile.favorite_authors.all()
     context = {
         'form': user_form,
         'profile_form': profile_form,
         'favorite_books': favorite_books,
+        'favorite_authors': favorite_authors,
     }
     return render(request, 'registration/profile.html', context)
 
@@ -90,5 +92,19 @@ def toggle_favorite_book(request, book_id):
         action = 'removed'
     else:
         profile.favorite_books.add(book)
+        action = 'added'
+    return JsonResponse({'status': 'success', 'action': action})
+
+
+@login_required
+@require_POST
+def toggle_favorite_author(request, author_id):
+    author = get_object_or_404(Author, id=author_id)
+    profile = request.user.profile
+    if author in profile.favorite_authors.all():
+        profile.favorite_authors.remove(author)
+        action = 'removed'
+    else:
+        profile.favorite_authors.add(author)
         action = 'added'
     return JsonResponse({'status': 'success', 'action': action})

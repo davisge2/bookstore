@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block extra_css %}
 <style>
   .content-container { width: 100%; gap: 20px; }
@@ -92,4 +91,7 @@
     </div>
   </div>
 </div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'js/author-management.js' %}"></script>
 {% endblock %}

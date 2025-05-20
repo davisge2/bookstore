@@ -8,6 +8,7 @@ urlpatterns = [
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
     path('profile/', views.profile, name='profile'),
     path('favorite/<int:book_id>/', views.toggle_favorite_book, name='toggle_favorite_book'),
+    path('favorite-author/<int:author_id>/', views.toggle_favorite_author, name='toggle_favorite_author'),
 
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
