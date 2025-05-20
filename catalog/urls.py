@@ -19,4 +19,6 @@ urlpatterns = [
     path('ajax/get-book/<int:book_id>/', views.get_book_data, name='get_book_data'),
     path('ajax/get-accolades/', views.ajax_get_accolades, name='ajax_get_accolades'),
     path('ajax/delete-book/<int:book_id>/', views.delete_book_ajax, name='delete_book_ajax'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('analytics/', views.filtered_analytics, name='filtered_analytics'),
 ]

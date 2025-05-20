@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from .filters import BookFilter
 from .models import Book, Author, Publisher, BestsellerAccolade
 from django.template.loader import render_to_string
+from django.core.serializers.json import DjangoJSONEncoder
+import json
 
 from django.db.models import Prefetch
 from .forms import BookForm, AuthorForm, PublisherForm, BestsellerAccoladeForm, DateRangeForm
@@ -314,6 +316,153 @@ def delete_book_ajax(request, book_id):
         }, status=404)
     except Exception as e:
         return JsonResponse({
-            'status': 'error', 
+            'status': 'error',
             'message': str(e)
         }, status=500)
+
+
+@login_required
+def dashboard(request):
+    total_books = Book.objects.count()
+    total_top5 = BestsellerAccolade.objects.filter(category='Top 5').count()
+    total_top10 = BestsellerAccolade.objects.filter(category='Top 10').count()
+
+    top_authors_top5 = (
+        Author.objects
+        .annotate(top5_count=Count(
+            'book__bestselleraccolade',
+            filter=Q(book__bestselleraccolade__category='Top 5')
+        ))
+        .order_by('-top5_count')[:5]
+    )
+
+    top_publishers_top5 = (
+        Publisher.objects
+        .annotate(top5_count=Count(
+            'book__bestselleraccolade',
+            filter=Q(book__bestselleraccolade__category='Top 5')
+        ))
+        .order_by('-top5_count')[:5]
+    )
+
+    latest_books = Book.objects.select_related('author', 'publisher').prefetch_related(
+        'bestselleraccolade_set'
+    ).order_by('-publish_date')[:8]
+
+    stats = {
+        'totalBooks': total_books,
+        'totalTop5': total_top5,
+        'totalTop10': total_top10,
+        'topAuthorsTop5': [
+            {'name': a.name, 'count': a.top5_count}
+            for a in top_authors_top5
+        ],
+        'topPublishersTop5': [
+            {'name': p.name, 'count': p.top5_count}
+            for p in top_publishers_top5
+        ],
+    }
+
+    stats_json = json.dumps(stats, cls=DjangoJSONEncoder)
+
+    return render(request, 'dashboard.html', {
+        'stats_json': stats_json,
+        'latest_books': latest_books,
+    })
+
+
+def get_filtered_books(request):
+    books = Book.objects.select_related('author', 'publisher').prefetch_related(
+        'bestselleraccolade_set'
+    )
+
+    simple_search = request.GET.get('simple_search', '')
+    if simple_search:
+        books = books.filter(
+            Q(title__icontains=simple_search) |
+            Q(author__name__icontains=simple_search) |
+            Q(publisher__name__icontains=simple_search)
+        )
+
+    book_filter = BookFilter(request.GET, queryset=books)
+    filtered_qs = book_filter.qs
+
+    book_id = request.GET.get('book')
+    author_id = request.GET.get('author')
+    publisher_id = request.GET.get('publisher')
+    publish_date_after = request.GET.get('publish_date_after')
+    publish_date_before = request.GET.get('publish_date_before')
+    accolade = request.GET.get('accolade')
+    accolades_list = request.GET.getlist('accolades')
+
+    if book_id:
+        filtered_qs = filtered_qs.filter(id=book_id)
+    if author_id:
+        filtered_qs = filtered_qs.filter(author_id=author_id)
+    if publisher_id:
+        filtered_qs = filtered_qs.filter(publisher_id=publisher_id)
+    if publish_date_after:
+        filtered_qs = filtered_qs.filter(publish_date__gte=publish_date_after)
+    if publish_date_before:
+        filtered_qs = filtered_qs.filter(publish_date__lte=publish_date_before)
+    if accolade:
+        filtered_qs = filtered_qs.filter(bestselleraccolade__category=accolade).distinct()
+    elif accolades_list:
+        q_objects = Q()
+        for value in accolades_list:
+            q_objects |= Q(bestselleraccolade__category=value)
+        filtered_qs = filtered_qs.filter(q_objects).distinct()
+
+    return filtered_qs
+
+
+@login_required
+def filtered_analytics(request):
+    filtered_books = get_filtered_books(request)
+    book_ids = filtered_books.values_list('id', flat=True)
+
+    total_books = filtered_books.count()
+    total_top5 = BestsellerAccolade.objects.filter(
+        category='Top 5', book_id__in=book_ids
+    ).count()
+    total_top10 = BestsellerAccolade.objects.filter(
+        category='Top 10', book_id__in=book_ids
+    ).count()
+
+    top_authors_top5 = (
+        Author.objects
+        .filter(book__in=book_ids)
+        .annotate(top5_count=Count(
+            'book__bestselleraccolade',
+            filter=Q(book__bestselleraccolade__category='Top 5', book__in=book_ids)
+        ))
+        .filter(top5_count__gt=0)
+        .order_by('-top5_count')[:5]
+    )
+
+    top_publishers_top5 = (
+        Publisher.objects
+        .filter(book__in=book_ids)
+        .annotate(top5_count=Count(
+            'book__bestselleraccolade',
+            filter=Q(book__bestselleraccolade__category='Top 5', book__in=book_ids)
+        ))
+        .filter(top5_count__gt=0)
+        .order_by('-top5_count')[:5]
+    )
+
+    stats = {
+        'totalBooks': total_books,
+        'totalTop5': total_top5,
+        'totalTop10': total_top10,
+        'topAuthorsTop5': [
+            {'name': a.name, 'count': a.top5_count}
+            for a in top_authors_top5
+        ],
+        'topPublishersTop5': [
+            {'name': p.name, 'count': p.top5_count}
+            for p in top_publishers_top5
+        ],
+    }
+
+    return JsonResponse(stats)

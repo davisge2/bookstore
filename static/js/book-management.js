@@ -319,6 +319,9 @@ function performCombinedSearch() {
                 
                 // Reinitialize components after AJAX update
                 initializeAll(currentSortBy, currentSortDir);
+                if (typeof updateAnalyticsAfterSearch === 'function') {
+                    updateAnalyticsAfterSearch();
+                }
             }
         },
         error: function() {
@@ -609,6 +612,9 @@ $(document).on('click', '.pagination a', function(e) {
             
             // Re-initialize after AJAX update
             initializeAll(currentSortBy, currentSortDir);
+            if (typeof updateAnalyticsAfterSearch === 'function') {
+                updateAnalyticsAfterSearch();
+            }
             
             // Update URL without page reload
             if (history.pushState) {
@@ -663,4 +669,7 @@ function getCookie(name) {
 // Initialize everything when document is ready
 $(document).ready(function() {
     initializeAll(window.initialSortBy || '', window.initialSortDir || 'asc');
+    if (typeof initializeAnalytics === 'function') {
+        initializeAnalytics();
+    }
 });
