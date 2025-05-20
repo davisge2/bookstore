@@ -1,0 +1,162 @@
+[
+    {
+        "model": "catalog.publisher",
+        "pk": 1,
+        "fields": {
+            "name": "Villegas and Sons",
+            "website": "https://www.cox.com/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 2,
+        "fields": {
+            "name": "Hines-Harmon",
+            "website": "https://sexton.org/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 3,
+        "fields": {
+            "name": "Smith, Farley and Sharp",
+            "website": "https://www.nelson.biz/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 4,
+        "fields": {
+            "name": "Brooks-Williams",
+            "website": "https://www.fisher-smith.net/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 5,
+        "fields": {
+            "name": "Mueller, Black and Jones",
+            "website": "https://brown-wilson.com/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 6,
+        "fields": {
+            "name": "Hughes and Sons",
+            "website": "http://www.perkins.net/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 7,
+        "fields": {
+            "name": "Moore PLC",
+            "website": "https://www.flores.com/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 8,
+        "fields": {
+            "name": "Harris-Lowe",
+            "website": "https://www.warren.com/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 9,
+        "fields": {
+            "name": "Kelley and Sons",
+            "website": "http://www.ayala-potter.com/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 10,
+        "fields": {
+            "name": "Miller PLC",
+            "website": "http://lewis.com/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 11,
+        "fields": {
+            "name": "Fitzpatrick, Patton and Garcia",
+            "website": "http://www.nelson-rubio.com/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 12,
+        "fields": {
+            "name": "Snyder, Miller and Petty",
+            "website": "https://www.johnson.info/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 13,
+        "fields": {
+            "name": "Castro Ltd",
+            "website": "https://www.pena.net/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 14,
+        "fields": {
+            "name": "Morrison Ltd",
+            "website": "http://www.wang.com/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 15,
+        "fields": {
+            "name": "Baker Ltd",
+            "website": "https://downs.net/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 16,
+        "fields": {
+            "name": "Barnes, Pierce and Collins",
+            "website": "http://www.smith.org/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 17,
+        "fields": {
+            "name": "Bailey, Quinn and Smith",
+            "website": "https://www.adams-yang.biz/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 18,
+        "fields": {
+            "name": "Coleman and Sons",
+            "website": "http://peterson.com/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 19,
+        "fields": {
+            "name": "Richardson, Andrews and Tucker",
+            "website": "http://berry-clay.com/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 20,
+        "fields": {
+            "name": "Henry Ltd",
+            "website": "http://harvey.info/"
+        }
+    }
+]

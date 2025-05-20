@@ -1,0 +1,82 @@
+[
+    {
+        "model": "catalog.publisher",
+        "pk": 1,
+        "fields": {
+            "name": "Hopkins LLC",
+            "website": "http://vega.biz/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 2,
+        "fields": {
+            "name": "Ortiz Group",
+            "website": "http://martin.info/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 3,
+        "fields": {
+            "name": "Taylor Ltd",
+            "website": "http://www.hoffman-morales.com/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 4,
+        "fields": {
+            "name": "Daniels-Best",
+            "website": "https://www.rivera-edwards.com/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 5,
+        "fields": {
+            "name": "Roberts-Arnold",
+            "website": "https://mccullough-williams.net/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 6,
+        "fields": {
+            "name": "Delacruz, Davis and Reed",
+            "website": "https://lopez.com/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 7,
+        "fields": {
+            "name": "Hobbs-Powell",
+            "website": "https://www.stanley.com/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 8,
+        "fields": {
+            "name": "Morton, Barrett and Macdonald",
+            "website": "http://www.cline.com/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 9,
+        "fields": {
+            "name": "Jackson-Daniels",
+            "website": "http://evans.com/"
+        }
+    },
+    {
+        "model": "catalog.publisher",
+        "pk": 10,
+        "fields": {
+            "name": "Weber Inc",
+            "website": "https://hernandez.com/"
+        }
+    }
+]

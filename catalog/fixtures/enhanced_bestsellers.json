@@ -1,0 +1,902 @@
+[
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 1,
+        "fields": {
+            "book_id": 284,
+            "category": "Top 10",
+            "accolade_date": "2024-02-05"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 2,
+        "fields": {
+            "book_id": 21,
+            "category": "Top 5",
+            "accolade_date": "2024-10-13"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 3,
+        "fields": {
+            "book_id": 191,
+            "category": "Top 10",
+            "accolade_date": "2024-12-15"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 4,
+        "fields": {
+            "book_id": 101,
+            "category": "Top 10",
+            "accolade_date": "2025-02-26"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 5,
+        "fields": {
+            "book_id": 208,
+            "category": "Top 10",
+            "accolade_date": "2024-04-03"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 6,
+        "fields": {
+            "book_id": 187,
+            "category": "Top 10",
+            "accolade_date": "2024-01-16"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 7,
+        "fields": {
+            "book_id": 64,
+            "category": "Top 5",
+            "accolade_date": "2024-10-19"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 8,
+        "fields": {
+            "book_id": 47,
+            "category": "Top 5",
+            "accolade_date": "2024-02-24"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 9,
+        "fields": {
+            "book_id": 277,
+            "category": "Top 10",
+            "accolade_date": "2023-07-08"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 10,
+        "fields": {
+            "book_id": 271,
+            "category": "Top 5",
+            "accolade_date": "2024-10-11"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 11,
+        "fields": {
+            "book_id": 75,
+            "category": "Top 10",
+            "accolade_date": "2024-07-07"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 12,
+        "fields": {
+            "book_id": 261,
+            "category": "Top 10",
+            "accolade_date": "2025-03-25"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 13,
+        "fields": {
+            "book_id": 295,
+            "category": "Top 5",
+            "accolade_date": "2024-05-10"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 14,
+        "fields": {
+            "book_id": 265,
+            "category": "Top 10",
+            "accolade_date": "2024-04-17"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 15,
+        "fields": {
+            "book_id": 112,
+            "category": "Top 10",
+            "accolade_date": "2024-07-25"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 16,
+        "fields": {
+            "book_id": 239,
+            "category": "Top 10",
+            "accolade_date": "2025-01-06"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 17,
+        "fields": {
+            "book_id": 106,
+            "category": "Top 5",
+            "accolade_date": "2024-06-03"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 18,
+        "fields": {
+            "book_id": 190,
+            "category": "Top 10",
+            "accolade_date": "2024-08-13"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 19,
+        "fields": {
+            "book_id": 127,
+            "category": "Top 10",
+            "accolade_date": "2024-10-13"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 20,
+        "fields": {
+            "book_id": 218,
+            "category": "Top 10",
+            "accolade_date": "2024-03-03"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 21,
+        "fields": {
+            "book_id": 33,
+            "category": "Top 5",
+            "accolade_date": "2024-06-16"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 22,
+        "fields": {
+            "book_id": 203,
+            "category": "Top 10",
+            "accolade_date": "2023-05-05"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 23,
+        "fields": {
+            "book_id": 96,
+            "category": "Top 5",
+            "accolade_date": "2024-06-27"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 24,
+        "fields": {
+            "book_id": 167,
+            "category": "Top 5",
+            "accolade_date": "2024-01-28"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 25,
+        "fields": {
+            "book_id": 65,
+            "category": "Top 10",
+            "accolade_date": "2024-02-10"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 26,
+        "fields": {
+            "book_id": 216,
+            "category": "Top 5",
+            "accolade_date": "2024-11-07"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 27,
+        "fields": {
+            "book_id": 108,
+            "category": "Top 5",
+            "accolade_date": "2025-01-27"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 28,
+        "fields": {
+            "book_id": 173,
+            "category": "Top 5",
+            "accolade_date": "2023-12-13"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 29,
+        "fields": {
+            "book_id": 228,
+            "category": "Top 5",
+            "accolade_date": "2024-09-09"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 30,
+        "fields": {
+            "book_id": 38,
+            "category": "Top 10",
+            "accolade_date": "2024-01-11"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 31,
+        "fields": {
+            "book_id": 246,
+            "category": "Top 5",
+            "accolade_date": "2024-03-19"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 32,
+        "fields": {
+            "book_id": 165,
+            "category": "Top 10",
+            "accolade_date": "2023-10-18"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 33,
+        "fields": {
+            "book_id": 87,
+            "category": "Top 5",
+            "accolade_date": "2024-11-22"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 34,
+        "fields": {
+            "book_id": 218,
+            "category": "Top 10",
+            "accolade_date": "2024-10-14"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 35,
+        "fields": {
+            "book_id": 31,
+            "category": "Top 5",
+            "accolade_date": "2025-01-13"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 36,
+        "fields": {
+            "book_id": 110,
+            "category": "Top 5",
+            "accolade_date": "2025-01-22"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 37,
+        "fields": {
+            "book_id": 209,
+            "category": "Top 5",
+            "accolade_date": "2024-03-04"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 38,
+        "fields": {
+            "book_id": 170,
+            "category": "Top 5",
+            "accolade_date": "2024-04-28"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 39,
+        "fields": {
+            "book_id": 102,
+            "category": "Top 10",
+            "accolade_date": "2024-08-04"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 40,
+        "fields": {
+            "book_id": 267,
+            "category": "Top 5",
+            "accolade_date": "2024-03-29"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 41,
+        "fields": {
+            "book_id": 278,
+            "category": "Top 5",
+            "accolade_date": "2024-05-18"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 42,
+        "fields": {
+            "book_id": 142,
+            "category": "Top 10",
+            "accolade_date": "2023-05-25"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 43,
+        "fields": {
+            "book_id": 232,
+            "category": "Top 10",
+            "accolade_date": "2025-04-23"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 44,
+        "fields": {
+            "book_id": 61,
+            "category": "Top 5",
+            "accolade_date": "2024-05-16"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 45,
+        "fields": {
+            "book_id": 84,
+            "category": "Top 5",
+            "accolade_date": "2025-02-07"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 46,
+        "fields": {
+            "book_id": 173,
+            "category": "Top 10",
+            "accolade_date": "2024-12-06"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 47,
+        "fields": {
+            "book_id": 120,
+            "category": "Top 5",
+            "accolade_date": "2023-05-20"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 48,
+        "fields": {
+            "book_id": 107,
+            "category": "Top 10",
+            "accolade_date": "2024-11-16"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 49,
+        "fields": {
+            "book_id": 56,
+            "category": "Top 10",
+            "accolade_date": "2024-07-10"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 50,
+        "fields": {
+            "book_id": 5,
+            "category": "Top 5",
+            "accolade_date": "2023-11-29"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 51,
+        "fields": {
+            "book_id": 167,
+            "category": "Top 10",
+            "accolade_date": "2024-04-26"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 52,
+        "fields": {
+            "book_id": 168,
+            "category": "Top 5",
+            "accolade_date": "2025-02-04"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 53,
+        "fields": {
+            "book_id": 203,
+            "category": "Top 5",
+            "accolade_date": "2024-10-28"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 54,
+        "fields": {
+            "book_id": 52,
+            "category": "Top 10",
+            "accolade_date": "2024-10-26"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 55,
+        "fields": {
+            "book_id": 13,
+            "category": "Top 10",
+            "accolade_date": "2023-09-18"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 56,
+        "fields": {
+            "book_id": 176,
+            "category": "Top 10",
+            "accolade_date": "2023-11-05"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 57,
+        "fields": {
+            "book_id": 225,
+            "category": "Top 10",
+            "accolade_date": "2025-02-20"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 58,
+        "fields": {
+            "book_id": 272,
+            "category": "Top 5",
+            "accolade_date": "2023-06-19"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 59,
+        "fields": {
+            "book_id": 243,
+            "category": "Top 5",
+            "accolade_date": "2025-01-10"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 60,
+        "fields": {
+            "book_id": 11,
+            "category": "Top 5",
+            "accolade_date": "2023-11-16"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 61,
+        "fields": {
+            "book_id": 62,
+            "category": "Top 10",
+            "accolade_date": "2024-10-07"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 62,
+        "fields": {
+            "book_id": 121,
+            "category": "Top 10",
+            "accolade_date": "2025-02-26"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 63,
+        "fields": {
+            "book_id": 119,
+            "category": "Top 10",
+            "accolade_date": "2023-11-12"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 64,
+        "fields": {
+            "book_id": 14,
+            "category": "Top 5",
+            "accolade_date": "2023-10-25"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 65,
+        "fields": {
+            "book_id": 110,
+            "category": "Top 10",
+            "accolade_date": "2025-04-08"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 66,
+        "fields": {
+            "book_id": 109,
+            "category": "Top 10",
+            "accolade_date": "2024-08-29"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 67,
+        "fields": {
+            "book_id": 177,
+            "category": "Top 5",
+            "accolade_date": "2023-09-29"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 68,
+        "fields": {
+            "book_id": 17,
+            "category": "Top 10",
+            "accolade_date": "2024-07-11"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 69,
+        "fields": {
+            "book_id": 17,
+            "category": "Top 10",
+            "accolade_date": "2023-11-20"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 70,
+        "fields": {
+            "book_id": 195,
+            "category": "Top 10",
+            "accolade_date": "2024-04-04"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 71,
+        "fields": {
+            "book_id": 123,
+            "category": "Top 5",
+            "accolade_date": "2025-01-21"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 72,
+        "fields": {
+            "book_id": 232,
+            "category": "Top 5",
+            "accolade_date": "2024-06-27"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 73,
+        "fields": {
+            "book_id": 239,
+            "category": "Top 10",
+            "accolade_date": "2025-01-10"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 74,
+        "fields": {
+            "book_id": 200,
+            "category": "Top 5",
+            "accolade_date": "2024-06-08"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 75,
+        "fields": {
+            "book_id": 246,
+            "category": "Top 10",
+            "accolade_date": "2024-06-10"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 76,
+        "fields": {
+            "book_id": 165,
+            "category": "Top 5",
+            "accolade_date": "2023-06-17"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 77,
+        "fields": {
+            "book_id": 279,
+            "category": "Top 5",
+            "accolade_date": "2024-09-06"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 78,
+        "fields": {
+            "book_id": 223,
+            "category": "Top 10",
+            "accolade_date": "2023-10-01"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 79,
+        "fields": {
+            "book_id": 288,
+            "category": "Top 5",
+            "accolade_date": "2024-05-07"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 80,
+        "fields": {
+            "book_id": 167,
+            "category": "Top 10",
+            "accolade_date": "2025-01-16"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 81,
+        "fields": {
+            "book_id": 288,
+            "category": "Top 10",
+            "accolade_date": "2024-09-14"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 82,
+        "fields": {
+            "book_id": 245,
+            "category": "Top 10",
+            "accolade_date": "2025-03-04"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 83,
+        "fields": {
+            "book_id": 284,
+            "category": "Top 5",
+            "accolade_date": "2023-06-18"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 84,
+        "fields": {
+            "book_id": 16,
+            "category": "Top 10",
+            "accolade_date": "2023-06-19"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 85,
+        "fields": {
+            "book_id": 20,
+            "category": "Top 10",
+            "accolade_date": "2024-02-19"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 86,
+        "fields": {
+            "book_id": 3,
+            "category": "Top 5",
+            "accolade_date": "2024-12-10"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 87,
+        "fields": {
+            "book_id": 20,
+            "category": "Top 10",
+            "accolade_date": "2024-10-27"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 88,
+        "fields": {
+            "book_id": 174,
+            "category": "Top 10",
+            "accolade_date": "2024-03-14"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 89,
+        "fields": {
+            "book_id": 119,
+            "category": "Top 5",
+            "accolade_date": "2024-03-18"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 90,
+        "fields": {
+            "book_id": 174,
+            "category": "Top 10",
+            "accolade_date": "2024-07-01"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 91,
+        "fields": {
+            "book_id": 221,
+            "category": "Top 5",
+            "accolade_date": "2025-04-14"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 92,
+        "fields": {
+            "book_id": 204,
+            "category": "Top 5",
+            "accolade_date": "2024-01-20"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 93,
+        "fields": {
+            "book_id": 34,
+            "category": "Top 5",
+            "accolade_date": "2025-02-08"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 94,
+        "fields": {
+            "book_id": 103,
+            "category": "Top 5",
+            "accolade_date": "2024-10-21"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 95,
+        "fields": {
+            "book_id": 81,
+            "category": "Top 5",
+            "accolade_date": "2023-08-11"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 96,
+        "fields": {
+            "book_id": 270,
+            "category": "Top 5",
+            "accolade_date": "2025-02-06"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 97,
+        "fields": {
+            "book_id": 213,
+            "category": "Top 5",
+            "accolade_date": "2023-05-18"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 98,
+        "fields": {
+            "book_id": 176,
+            "category": "Top 10",
+            "accolade_date": "2024-09-19"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 99,
+        "fields": {
+            "book_id": 29,
+            "category": "Top 5",
+            "accolade_date": "2024-05-06"
+        }
+    },
+    {
+        "model": "catalog.bestselleraccolade",
+        "pk": 100,
+        "fields": {
+            "book_id": 57,
+            "category": "Top 5",
+            "accolade_date": "2024-01-17"
+        }
+    }
+]
