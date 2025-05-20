@@ -1,12 +1,79 @@
+{% load url_tags %}
+<style>
+  .sortable {
+    cursor: pointer;
+  }
+  .sortable:hover {
+    background-color: #f5f5f5;
+  }
+  .sort-icon {
+    margin-left: 5px;
+  }
+  th.sortable[data-sort='{{ sort_by }}'] {
+    background-color: #f0f0f0;
+  }
+</style>
 <table class="table table-striped table-bordered" id="authors-table">
   <thead>
     <tr>
       <th>Actions</th>
-      <th>Name</th>
+      <th class="sortable" data-sort="name">
+        Name
+        {% if sort_by == 'name' %}
+          <span class="sort-icon">
+            {% if sort_dir == 'asc' %}
+              <i class="glyphicon glyphicon-sort-by-alphabet"></i>
+            {% else %}
+              <i class="glyphicon glyphicon-sort-by-alphabet-alt"></i>
+            {% endif %}
+          </span>
+        {% else %}
+          <i class="glyphicon glyphicon-sort text-muted"></i>
+        {% endif %}
+      </th>
       <th>Bio</th>
-      <th>Books</th>
-      <th>Top 5s</th>
-      <th>Top 10s</th>
+      <th class="sortable" data-sort="book_count">
+        Books
+        {% if sort_by == 'book_count' %}
+          <span class="sort-icon">
+            {% if sort_dir == 'asc' %}
+              <i class="glyphicon glyphicon-sort-by-order"></i>
+            {% else %}
+              <i class="glyphicon glyphicon-sort-by-order-alt"></i>
+            {% endif %}
+          </span>
+        {% else %}
+          <i class="glyphicon glyphicon-sort text-muted"></i>
+        {% endif %}
+      </th>
+      <th class="sortable" data-sort="top5_count">
+        Top 5s
+        {% if sort_by == 'top5_count' %}
+          <span class="sort-icon">
+            {% if sort_dir == 'asc' %}
+              <i class="glyphicon glyphicon-sort-by-order"></i>
+            {% else %}
+              <i class="glyphicon glyphicon-sort-by-order-alt"></i>
+            {% endif %}
+          </span>
+        {% else %}
+          <i class="glyphicon glyphicon-sort text-muted"></i>
+        {% endif %}
+      </th>
+      <th class="sortable" data-sort="top10_count">
+        Top 10s
+        {% if sort_by == 'top10_count' %}
+          <span class="sort-icon">
+            {% if sort_dir == 'asc' %}
+              <i class="glyphicon glyphicon-sort-by-order"></i>
+            {% else %}
+              <i class="glyphicon glyphicon-sort-by-order-alt"></i>
+            {% endif %}
+          </span>
+        {% else %}
+          <i class="glyphicon glyphicon-sort text-muted"></i>
+        {% endif %}
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -28,3 +95,38 @@
     {% endfor %}
   </tbody>
 </table>
+<nav>
+  <ul class="pagination">
+    {% if authors.has_previous %}
+      <li>
+        <a href="?{% url_replace page=authors.previous_page_number %}">« Previous</a>
+      </li>
+    {% else %}
+      <li class="disabled"><span>« Previous</span></li>
+    {% endif %}
+
+    {% for num in authors.paginator.page_range %}
+      <li class="{% if authors.number == num %}active{% endif %}">
+        <a href="?{% url_replace page=num %}">{{ num }}</a>
+      </li>
+    {% endfor %}
+
+    {% if authors.has_next %}
+      <li>
+        <a href="?{% url_replace page=authors.next_page_number %}">Next »</a>
+      </li>
+    {% else %}
+      <li class="disabled"><span>Next »</span></li>
+    {% endif %}
+  </ul>
+</nav>
+
+{% block scripts %}
+<script>
+  window.initialSortBy = '{{ sort_by }}';
+  window.initialSortDir = '{{ sort_dir }}';
+  if (typeof initializeAuthorPage === 'function') {
+    initializeAuthorPage('{{ sort_by }}', '{{ sort_dir }}');
+  }
+</script>
+{% endblock %}
