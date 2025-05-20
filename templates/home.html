@@ -3,278 +3,284 @@
 {% load url_tags %}
 
 <style>
-  .content-container {display:flex;width:100%;gap:20px;}
-  .book-list-container {flex:3;}
-  .analytics-sidebar {flex:2;position:sticky;top:20px;height:calc(100vh - 40px);overflow-y:auto;padding-right:10px;}
-  @media (max-width: 992px){.content-container{flex-direction:column;}.analytics-sidebar{height:auto;position:static;}}
-  .mini-section{background-color:white;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.05);margin-bottom:20px;padding:15px;}
-  .mini-section-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f0f0f0;padding-bottom:10px;margin-bottom:15px;}
-  .mini-section-header h3{font-size:1rem;font-weight:600;margin:0;}
-  .mini-chart{height:200px;position:relative;}
-  .mini-kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:15px;}
-  .mini-kpi-tile{background:#f5f6fa;border-radius:8px;padding:10px;text-align:center;}
-  .mini-kpi-title{font-size:.8rem;color:#888;margin-bottom:5px;}
-  .mini-kpi-value{font-size:1.2rem;font-weight:700;color:#333;}
-  .mini-list{margin:0;padding:0;list-style:none;}
-  .mini-list li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;}
-  .mini-list li:last-child{border-bottom:none;}
-  .mini-list .name{font-weight:500;}
-  .mini-list .count{background:#6772e5;color:white;padding:2px 8px;border-radius:12px;font-size:.8rem;}
+    .content-container {display:flex;width:100%;gap:20px;}
+    .book-list-container {flex:3;}
+    .analytics-sidebar {flex:2;position:sticky;top:20px;height:calc(100vh - 40px);overflow-y:auto;padding-right:10px;}
+    @media (max-width: 992px){.content-container{flex-direction:column;}.analytics-sidebar{height:auto;position:static;}}
+    .mini-section{background-color:white;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.05);margin-bottom:20px;padding:15px;}
+    .mini-section-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f0f0f0;padding-bottom:10px;margin-bottom:15px;}
+    .mini-section-header h3{font-size:1rem;font-weight:600;margin:0;}
+    .mini-chart{height:200px;position:relative;}
+    .mini-kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:15px;}
+    .mini-kpi-tile{background:#f5f6fa;border-radius:8px;padding:10px;text-align:center;}
+    .mini-kpi-title{font-size:.8rem;color:#888;margin-bottom:5px;}
+    .mini-kpi-value{font-size:1.2rem;font-weight:700;color:#333;}
+    .mini-list{margin:0;padding:0;list-style:none;}
+    .mini-list li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;}
+    .mini-list li:last-child{border-bottom:none;}
+    .mini-list .name{font-weight:500;}
+    .mini-list .count{background:#6772e5;color:white;padding:2px 8px;border-radius:12px;font-size:.8rem;}
 </style>
 
 {% block content %}
-<div class="container-fluid">
-<h2>Books (Advanced Search, Filter & Pagination)</h2>
-<!-- Simple search form -->
-<div class="row mb-3">
-  <div class="col-md-8">
-    <form id="simple-search-form" class="form-inline">
-      <div class="input-group" style="width:100%;">
-        <input type="text" name="simple_search" class="form-control" placeholder="Search title, author or publisher..." value="{{ simple_search }}">
-        <span class="input-group-btn">
+    <div class="container-fluid">
+        <h2>Books (Advanced Search, Filter & Pagination)</h2>
+        <!-- Simple search form -->
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <form id="simple-search-form" class="form-inline">
+                    <div class="input-group" style="width:100%;">
+                        <input type="text" name="simple_search" class="form-control" placeholder="Search title, author or publisher..." value="{{ simple_search }}">
+                        <span class="input-group-btn">
           <button class="btn btn-primary" type="submit">Search</button>
         </span>
-      </div>
-    </form>
-  </div>
-<!-- Update the button section in home.html -->
-<div class="col-md-4 text-right">
-  <button class="btn btn-success btn-add-book">Add New Book</button>
-  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#searchModal">
-    Advanced Search
-  </button>
-  <button id="reset-all-btn" type="button" class="btn btn-warning">
-    Reset All
-  </button>
-</div>
-</div>
-<!-- Correct Bootstrap 3 Modal -->
-<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title" id="searchModalLabel">Advanced Search</h4>
-      </div>
-      <div class="modal-body">
-       <form id="advanced-search-form">
-    <div class="form-group">
-      <label for="book-select">Book:</label>
-      <select id="book-select" name="book" class="form-control" style="width:100%;"></select>
-    </div>
-    <div class="form-group">
-      <label for="author-select">Author:</label>
-      <select id="author-select" name="author" class="form-control" style="width:100%;"></select>
-    </div>
-    <div class="form-group">
-      <label for="publisher-select">Publisher:</label>
-      <select id="publisher-select" name="publisher" class="form-control" style="width:100%;"></select>
-    </div>
-    
-    <!-- Add date range filter -->
-    <div class="form-group">
-      <label>Publish Date Range:</label>
-      <div class="row">
-        <div class="col-md-6">
-          {{ date_range_form.publish_date_after }}
-        </div>
-        <div class="col-md-6">
-          {{ date_range_form.publish_date_before }}
-        </div>
-      </div>
-    </div>
-    
-<!-- Add multiple accolades filter -->
-<div class="form-group">
-  <label>Multiple Accolades (OR filter):</label>
-  <div class="checkbox">
-    {% for choice in date_range_form.accolades %}
-      <label>
-        {{ choice.tag }} {{ choice.choice_label }}
-      </label><br>
-    {% endfor %}
-  </div>
-  <p class="help-block">{{ date_range_form.accolades.help_text }}</p>
-</div>
-  </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="search-btn" class="btn btn-primary">Search</button>
-        <button type="button" id="reset-btn" class="btn btn-secondary" onclick="resetFilters();return false;">Reset</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Add/Edit Book Modal -->
-<div class="modal fade" id="bookModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form id="book-form">
-        {% csrf_token %}
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Add/Edit Book</h4>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" id="book-id" name="book-id">
-          <div class="form-group">
-            <label>Title</label>
-            <input type="text" name="title" class="form-control" required>
-          </div>
-
-          <div class="form-group">
-            <label>Author</label>
-            <select id="author-select-modal" name="author" class="form-control" style="width:100%;"></select>
-          </div>
-
-          <div class="form-group">
-            <label>Publisher</label>
-            <select id="publisher-select-modal" name="publisher" class="form-control" style="width:100%;"></select>
-          </div>
-
-          <div class="form-group">
-            <label>Publish Date</label>
-            <input type="date" name="publish_date" class="form-control">
-          </div>
-
-            <div class="form-group">
-              <label>Bestseller Accolades</label>
-              <select id="accolades-select" name="accolades" multiple class="form-control" style="width:100%;">
-                <!-- Dynamic Options Loaded via JS -->
-              </select>
+                    </div>
+                </form>
             </div>
-
-
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Save Book</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- Update the active filters section in home.html -->
-<div id="active-filters" class="well well-sm" style="margin-top: 20px;">
-  <h4>Active Filters:</h4>
-  <div class="row">
-    <div class="col-md-12">
-      <ul class="list-inline">
-        {% if simple_search %}
-          <li>
-            <span class="label label-info">Search: {{ simple_search }} <a href="#" class="remove-filter" data-filter="simple_search"><i class="glyphicon glyphicon-remove"></i></a></span>
-          </li>
-        {% endif %}
-        {% if book_name %}
-          <li>
-            <span class="label label-info">Book: {{ book_name }} <a href="#" class="remove-filter" data-filter="book"><i class="glyphicon glyphicon-remove"></i></a></span>
-          </li>
-        {% endif %}
-        {% if author_name %}
-          <li>
-            <span class="label label-info">Author: {{ author_name }} <a href="#" class="remove-filter" data-filter="author"><i class="glyphicon glyphicon-remove"></i></a></span>
-          </li>
-        {% endif %}
-        {% if publisher_name %}
-          <li>
-            <span class="label label-info">Publisher: {{ publisher_name }} <a href="#" class="remove-filter" data-filter="publisher"><i class="glyphicon glyphicon-remove"></i></a></span>
-          </li>
-        {% endif %}
-        {% if publish_date_after %}
-          <li>
-            <span class="label label-info">From: {{ publish_date_after }} <a href="#" class="remove-filter" data-filter="publish_date_after"><i class="glyphicon glyphicon-remove"></i></a></span>
-          </li>
-        {% endif %}
-        {% if publish_date_before %}
-          <li>
-            <span class="label label-info">To: {{ publish_date_before }} <a href="#" class="remove-filter" data-filter="publish_date_before"><i class="glyphicon glyphicon-remove"></i></a></span>
-          </li>
-        {% endif %}
-        {% if accolade %}
-          <li>
-            <span class="label label-info">Accolade: {{ accolade }} <a href="#" class="remove-filter" data-filter="accolade"><i class="glyphicon glyphicon-remove"></i></a></span>
-          </li>
-        {% endif %}
-        {% for accolade in accolades_list %}
-          <li>
-            <span class="label label-info">Accolade: {{ accolade }} <a href="#" class="remove-filter" data-filter="accolades" data-value="{{ accolade }}"><i class="glyphicon glyphicon-remove"></i></a></span>
-          </li>
-        {% endfor %}
-      </ul>
-      {% if simple_search or book_name or author_name or publisher_name or publish_date_after or publish_date_before or accolade or accolades_list %}
-        <button id="quick-reset-btn" class="btn btn-xs btn-danger">Clear All Filters</button>
-      {% endif %}
-    </div>
-  </div>
-</div>
-
-
-<div class="content-container">
-  <div class="book-list-container">
-    <div id="search-results">
-        {% include 'partials/book_list.html' %}
-    </div>
-  </div>
-  <div class="analytics-sidebar">
-    <div class="mini-section">
-        <div class="mini-section-header"><h3>Results Summary</h3></div>
-        <div class="mini-kpi-grid">
-            <div class="mini-kpi-tile">
-                <div class="mini-kpi-title">Total Books</div>
-                <div class="mini-kpi-value" id="filter-total-books">{{ books.paginator.count }}</div>
-            </div>
-            <div class="mini-kpi-tile">
-                <div class="mini-kpi-title">Top 5 Bestsellers</div>
-                <div class="mini-kpi-value" id="filter-top5">-</div>
-            </div>
-            <div class="mini-kpi-tile">
-                <div class="mini-kpi-title">Top 10 Bestsellers</div>
-                <div class="mini-kpi-value" id="filter-top10">-</div>
-            </div>
-            <div class="mini-kpi-tile">
-                <div class="mini-kpi-title">Bestseller Rate</div>
-                <div class="mini-kpi-value" id="filter-bestseller-rate">-</div>
+            <!-- Update the button section in home.html -->
+            <div class="col-md-4 text-right">
+                <button class="btn btn-success btn-add-book">Add New Book</button>
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#searchModal">
+                    Advanced Search
+                </button>
+                <button id="reset-all-btn" type="button" class="btn btn-warning">
+                    Reset All
+                </button>
             </div>
         </div>
+        <!-- Correct Bootstrap 3 Modal -->
+        <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="searchModalLabel">Advanced Search</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="advanced-search-form">
+                            <div class="form-group">
+                                <label for="book-select">Book:</label>
+                                <select id="book-select" name="book" class="form-control" style="width:100%;"></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="author-select">Author:</label>
+                                <select id="author-select" name="author" class="form-control" style="width:100%;"></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="publisher-select">Publisher:</label>
+                                <select id="publisher-select" name="publisher" class="form-control" style="width:100%;"></select>
+                            </div>
+
+                            <!-- Add date range filter -->
+                            <div class="form-group">
+                                <label>Publish Date Range:</label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        {{ date_range_form.publish_date_after }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{ date_range_form.publish_date_before }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Add multiple accolades filter -->
+                            <div class="form-group">
+                                <label>Multiple Accolades (OR filter):</label>
+                                <div class="checkbox">
+                                    {% for choice in date_range_form.accolades %}
+                                        <label>
+                                            {{ choice.tag }} {{ choice.choice_label }}
+                                        </label><br>
+                                    {% endfor %}
+                                </div>
+                                <p class="help-block">{{ date_range_form.accolades.help_text }}</p>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="search-btn" class="btn btn-primary">Search</button>
+                        <button type="button" id="reset-btn" class="btn btn-secondary" onclick="resetFilters();return false;">Reset</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add/Edit Book Modal -->
+        <div class="modal fade" id="bookModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="book-form">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Add/Edit Book</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="book-id" name="book-id">
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" name="title" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Author</label>
+                                <select id="author-select-modal" name="author" class="form-control" style="width:100%;"></select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Publisher</label>
+                                <select id="publisher-select-modal" name="publisher" class="form-control" style="width:100%;"></select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Publish Date</label>
+                                <input type="date" name="publish_date" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Bestseller Accolades</label>
+                                <select id="accolades-select" name="accolades" multiple class="form-control" style="width:100%;">
+                                    <!-- Dynamic Options Loaded via JS -->
+                                </select>
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save Book</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Update the active filters section in home.html -->
+        <div id="active-filters" class="well well-sm" style="margin-top: 20px;">
+            <h4>Active Filters:</h4>
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="list-inline">
+                        {% if simple_search %}
+                            <li>
+                                <span class="label label-info">Search: {{ simple_search }} <a href="#" class="remove-filter" data-filter="simple_search"><i class="glyphicon glyphicon-remove"></i></a></span>
+                            </li>
+                        {% endif %}
+                        {% if book_name %}
+                            <li>
+                                <span class="label label-info">Book: {{ book_name }} <a href="#" class="remove-filter" data-filter="book"><i class="glyphicon glyphicon-remove"></i></a></span>
+                            </li>
+                        {% endif %}
+                        {% if author_name %}
+                            <li>
+                                <span class="label label-info">Author: {{ author_name }} <a href="#" class="remove-filter" data-filter="author"><i class="glyphicon glyphicon-remove"></i></a></span>
+                            </li>
+                        {% endif %}
+                        {% if publisher_name %}
+                            <li>
+                                <span class="label label-info">Publisher: {{ publisher_name }} <a href="#" class="remove-filter" data-filter="publisher"><i class="glyphicon glyphicon-remove"></i></a></span>
+                            </li>
+                        {% endif %}
+                        {% if publish_date_after %}
+                            <li>
+                                <span class="label label-info">From: {{ publish_date_after }} <a href="#" class="remove-filter" data-filter="publish_date_after"><i class="glyphicon glyphicon-remove"></i></a></span>
+                            </li>
+                        {% endif %}
+                        {% if publish_date_before %}
+                            <li>
+                                <span class="label label-info">To: {{ publish_date_before }} <a href="#" class="remove-filter" data-filter="publish_date_before"><i class="glyphicon glyphicon-remove"></i></a></span>
+                            </li>
+                        {% endif %}
+                        {% if accolade %}
+                            <li>
+                                <span class="label label-info">Accolade: {{ accolade }} <a href="#" class="remove-filter" data-filter="accolade"><i class="glyphicon glyphicon-remove"></i></a></span>
+                            </li>
+                        {% endif %}
+                        {% for accolade in accolades_list %}
+                            <li>
+                                <span class="label label-info">Accolade: {{ accolade }} <a href="#" class="remove-filter" data-filter="accolades" data-value="{{ accolade }}"><i class="glyphicon glyphicon-remove"></i></a></span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    {% if simple_search or book_name or author_name or publisher_name or publish_date_after or publish_date_before or accolade or accolades_list %}
+                        <button id="quick-reset-btn" class="btn btn-xs btn-danger">Clear All Filters</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="content-container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="book-list-container">
+                        <div id="search-results">
+                            {% include 'partials/book_list.html' %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                <div class="analytics-sidebar">
+                    <div class="mini-section">
+                        <div class="mini-section-header"><h3>Results Summary</h3></div>
+                        <div class="mini-kpi-grid">
+                            <div class="mini-kpi-tile">
+                                <div class="mini-kpi-title">Total Books</div>
+                                <div class="mini-kpi-value" id="filter-total-books">{{ books.paginator.count }}</div>
+                            </div>
+                            <div class="mini-kpi-tile">
+                                <div class="mini-kpi-title">Top 5 Bestsellers</div>
+                                <div class="mini-kpi-value" id="filter-top5">-</div>
+                            </div>
+                            <div class="mini-kpi-tile">
+                                <div class="mini-kpi-title">Top 10 Bestsellers</div>
+                                <div class="mini-kpi-value" id="filter-top10">-</div>
+                            </div>
+                            <div class="mini-kpi-tile">
+                                <div class="mini-kpi-title">Bestseller Rate</div>
+                                <div class="mini-kpi-value" id="filter-bestseller-rate">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mini-section">
+                        <div class="mini-section-header"><h3>Distribution</h3></div>
+                        <div class="mini-chart"><canvas id="distributionChart"></canvas></div>
+                    </div>
+                    <div class="mini-section">
+                        <div class="mini-section-header"><h3>Top Authors</h3></div>
+                        <div class="mini-chart"><canvas id="authorsChart"></canvas></div>
+                        <ul class="mini-list" id="top-authors-list"></ul>
+                    </div>
+                    <div class="mini-section">
+                        <div class="mini-section-header"><h3>Top Publishers</h3></div>
+                        <div class="mini-chart"><canvas id="publishersChart"></canvas></div>
+                        <ul class="mini-list" id="top-publishers-list"></ul>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
     </div>
-    <div class="mini-section">
-        <div class="mini-section-header"><h3>Distribution</h3></div>
-        <div class="mini-chart"><canvas id="distributionChart"></canvas></div>
-    </div>
-    <div class="mini-section">
-        <div class="mini-section-header"><h3>Top Authors</h3></div>
-        <div class="mini-chart"><canvas id="authorsChart"></canvas></div>
-        <ul class="mini-list" id="top-authors-list"></ul>
-    </div>
-    <div class="mini-section">
-        <div class="mini-section-header"><h3>Top Publishers</h3></div>
-        <div class="mini-chart"><canvas id="publishersChart"></canvas></div>
-        <ul class="mini-list" id="top-publishers-list"></ul>
-    </div>
-  </div>
-</div>
-</div>
 {% endblock %}
 
 {% block scripts %}
-<!-- Initialize filter values and sorting for JavaScript -->
-<script>
-    // Pass initial values to the JavaScript
-    window.initialFilterValues = {
-        book_name: '{{ book_name }}',
-        author_name: '{{ author_name }}',
-        publisher_name: '{{ publisher_name }}'
-    };
-    
-    // Pass sorting information to JavaScript
-    window.initialSortBy = '{{ sort_by }}';
-    window.initialSortDir = '{{ sort_dir }}';
-    window.analyticsUrl = '{% url "filtered_analytics" %}';
-</script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-<script src="{% static 'js/analytics.js' %}"></script>
+    <!-- Initialize filter values and sorting for JavaScript -->
+    <script>
+        // Pass initial values to the JavaScript
+        window.initialFilterValues = {
+            book_name: '{{ book_name }}',
+            author_name: '{{ author_name }}',
+            publisher_name: '{{ publisher_name }}'
+        };
+
+        // Pass sorting information to JavaScript
+        window.initialSortBy = '{{ sort_by }}';
+        window.initialSortDir = '{{ sort_dir }}';
+        window.analyticsUrl = '{% url "filtered_analytics" %}';
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="{% static 'js/analytics.js' %}"></script>
 {% endblock %}
