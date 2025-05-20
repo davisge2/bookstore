@@ -4,26 +4,27 @@
 
 {% block extra_css %}
 <style>
-  .content-container {display:flex;width:100%;gap:20px;}
-  .book-list-container {flex:3;}
-  .analytics-sidebar {flex:2;position:sticky;top:20px;height:calc(100vh - 40px);overflow-y:auto;padding-right:10px;}
-  @media (max-width: 992px){
-    .content-container{flex-direction:column;}
-    .analytics-sidebar{height:auto;position:static;}
+  .content-container { display: flex; width: 100%; gap: 20px; }
+  .book-list-container { flex: 3; }
+  .analytics-sidebar { flex: 2; position: sticky; top: 20px; height: calc(100vh - 40px); overflow-y: auto; padding-right: 10px; }
+  @media (max-width: 992px) {
+    .content-container { flex-direction: column; }
+    .analytics-sidebar { height: auto; position: static; }
   }
-  .mini-section{background-color:white;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.05);margin-bottom:20px;padding:15px;}
-  .mini-section-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f0f0f0;padding-bottom:10px;margin-bottom:15px;}
-  .mini-section-header h3{font-size:1rem;font-weight:600;margin:0;}
-  .mini-chart{height:200px;position:relative;}
-  .mini-kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:15px;}
-  .mini-kpi-tile{background:#f5f6fa;border-radius:8px;padding:10px;text-align:center;}
-  .mini-kpi-title{font-size:.8rem;color:#888;margin-bottom:5px;}
-  .mini-kpi-value{font-size:1.2rem;font-weight:700;color:#333;}
-  .mini-list{margin:0;padding:0;list-style:none;}
-  .mini-list li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;}
-  .mini-list li:last-child{border-bottom:none;}
-  .mini-list .name{font-weight:500;}
-  .mini-list .count{background:#6772e5;color:white;padding:2px 8px;border-radius:12px;font-size:.8rem;}
+  .mini-section { background-color: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; padding: 15px; }
+  .mini-section-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 15px; }
+  .mini-section-header h3 { font-size: 1rem; font-weight: 600; margin: 0; }
+  .mini-chart { height: 200px; position: relative; }
+  .mini-kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+  .mini-kpi-tile { background: #f5f6fa; border-radius: 8px; padding: 10px; text-align: center; }
+  .mini-kpi-title { font-size: .8rem; color: #888; margin-bottom: 5px; }
+  .mini-kpi-value { font-size: 1.2rem; font-weight: 700; color: #333; }
+  .mini-kpi-icon { font-size: 1.4rem; color: #6772e5; margin-bottom: 5px; }
+  .mini-list { margin: 0; padding: 0; list-style: none; }
+  .mini-list li { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+  .mini-list li:last-child { border-bottom: none; }
+  .mini-list .name { font-weight: 500; }
+  .mini-list .count { background: #6772e5; color: white; padding: 2px 8px; border-radius: 12px; font-size: .8rem; }
 </style>
 {% endblock %}
 
@@ -43,12 +44,8 @@
     </div>
     <div class="col-md-4 text-right">
       <button class="btn btn-success btn-add-book">Add New Book</button>
-      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#searchModal">
-        Advanced Search
-      </button>
-      <button id="reset-all-btn" type="button" class="btn btn-warning">
-        Reset All
-      </button>
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#searchModal">Advanced Search</button>
+      <button id="reset-all-btn" type="button" class="btn btn-warning">Reset All</button>
     </div>
   </div>
 
@@ -60,62 +57,26 @@
       <div class="col-md-12">
         <ul class="list-inline">
           {% if simple_search %}
-            <li>
-              <span class="label label-info">Search: {{ simple_search }} <a href="#" class="remove-filter" data-filter="simple_search"><i class="glyphicon glyphicon-remove"></i></a></span>
-            </li>
+            <li><span class="label label-info">Search: {{ simple_search }} <a href="#" class="remove-filter" data-filter="simple_search"><i class="glyphicon glyphicon-remove"></i></a></span></li>
           {% endif %}
           {% if book_name %}
-            <li>
-              <span class="label label-info">Book: {{ book_name }} <a href="#" class="remove-filter" data-filter="book"><i class="glyphicon glyphicon-remove"></i></a></span>
-            </li>
+            <li><span class="label label-info">Book: {{ book_name }} <a href="#" class="remove-filter" data-filter="book"><i class="glyphicon glyphicon-remove"></i></a></span></li>
           {% endif %}
-          {% if author_name %}
-            <li>
-              <span class="label label-info">Author: {{ author_name }} <a href="#" class="remove-filter" data-filter="author"><i class="glyphicon glyphicon-remove"></i></a></span>
-            </li>
-          {% endif %}
-          {% if publisher_name %}
-            <li>
-              <span class="label label-info">Publisher: {{ publisher_name }} <a href="#" class="remove-filter" data-filter="publisher"><i class="glyphicon glyphicon-remove"></i></a></span>
-            </li>
-          {% endif %}
-          {% if publish_date_after %}
-            <li>
-              <span class="label label-info">From: {{ publish_date_after }} <a href="#" class="remove-filter" data-filter="publish_date_after"><i class="glyphicon glyphicon-remove"></i></a></span>
-            </li>
-          {% endif %}
-          {% if publish_date_before %}
-            <li>
-              <span class="label label-info">To: {{ publish_date_before }} <a href="#" class="remove-filter" data-filter="publish_date_before"><i class="glyphicon glyphicon-remove"></i></a></span>
-            </li>
-          {% endif %}
-          {% for accolade in accolades_list %}
-            <li>
-              <span class="label label-info">Accolade: {{ accolade }} <a href="#" class="remove-filter" data-filter="accolades" data-value="{{ accolade }}"><i class="glyphicon glyphicon-remove"></i></a></span>
-            </li>
-          {% endfor %}
+          <!-- Additional filters -->
         </ul>
-        {% if simple_search or book_name or author_name or publisher_name or publish_date_after or publish_date_before or accolades_list %}
-          <button id="quick-reset-btn" class="btn btn-xs btn-danger">Clear All Filters</button>
-        {% endif %}
+        <button id="quick-reset-btn" class="btn btn-xs btn-danger">Clear All Filters</button>
       </div>
     </div>
   </div>
 
   <div class="content-container">
-    <div class="row">
-      <div class="col-md-8">
-        <div class="book-list-container">
-          <div id="search-results">
-            {% include 'partials/book_list.html' %}
-          </div>
-        </div>
+    <div class="book-list-container">
+      <div id="search-results">
+        {% include 'partials/book_list.html' %}
       </div>
-      <div class="col-md-4">
-        <div class="analytics-sidebar">
-          {% include 'partials/analytics_sidebar.html' %}
-        </div>
-      </div>
+    </div>
+    <div class="analytics-sidebar">
+      {% include 'partials/analytics_sidebar.html' %}
     </div>
   </div>
 </div>
