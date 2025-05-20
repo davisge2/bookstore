@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
+{% load bootstrap3 %}
 {% block content %}
-<div class="container">
-  <h2>Register</h2>
-  <form method="post">
+<div class="container" style="max-width: 500px;">
+  <h2 class="text-center">Register</h2>
+  <form method="post" class="form" novalidate>
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Register</button>
+    {% bootstrap_form form %}
+    <button type="submit" class="btn btn-primary btn-block">Register</button>
   </form>
-  <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+  <hr>
+  <p class="text-center">Already have an account? <a href="{% url 'login' %}">Login</a></p>
 </div>
 {% endblock %}
