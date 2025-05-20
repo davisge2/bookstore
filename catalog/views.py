@@ -143,17 +143,67 @@ def home(request):
         html = render_to_string('partials/book_list.html', context, request=request)
         return HttpResponse(html)
 
-    return render(request, 'home.html', context)
+    return render(request, 'books.html', context)
     
 @login_required
 def author_list(request):
-    authors = Author.objects.all()
-    return render(request, 'author_list.html', {'authors': authors})
+    authors = (
+        Author.objects
+        .annotate(
+            book_count=Count('book'),
+            top5_count=Count(
+                'book__bestselleraccolade',
+                filter=Q(book__bestselleraccolade__category='Top 5')
+            ),
+            top10_count=Count(
+                'book__bestselleraccolade',
+                filter=Q(book__bestselleraccolade__category='Top 10')
+            )
+        )
+    )
+
+    analytics = {
+        'total_authors': authors.count(),
+        'authors_with_top5': authors.filter(top5_count__gt=0).count(),
+        'authors_with_top10': authors.filter(top10_count__gt=0).count(),
+        'top_authors_top5': authors.filter(top5_count__gt=0).order_by('-top5_count')[:5],
+        'top_authors_top10': authors.filter(top10_count__gt=0).order_by('-top10_count')[:5],
+    }
+
+    return render(request, 'authors.html', {
+        'authors': authors,
+        'analytics': analytics,
+    })
 
 @login_required
 def publisher_list(request):
-    publishers = Publisher.objects.all()
-    return render(request, 'publisher_list.html', {'publishers': publishers})
+    publishers = (
+        Publisher.objects
+        .annotate(
+            book_count=Count('book'),
+            top5_count=Count(
+                'book__bestselleraccolade',
+                filter=Q(book__bestselleraccolade__category='Top 5')
+            ),
+            top10_count=Count(
+                'book__bestselleraccolade',
+                filter=Q(book__bestselleraccolade__category='Top 10')
+            )
+        )
+    )
+
+    analytics = {
+        'total_publishers': publishers.count(),
+        'publishers_with_top5': publishers.filter(top5_count__gt=0).count(),
+        'publishers_with_top10': publishers.filter(top10_count__gt=0).count(),
+        'top_publishers_top5': publishers.filter(top5_count__gt=0).order_by('-top5_count')[:5],
+        'top_publishers_top10': publishers.filter(top10_count__gt=0).order_by('-top10_count')[:5],
+    }
+
+    return render(request, 'publishers.html', {
+        'publishers': publishers,
+        'analytics': analytics,
+    })
 
 @login_required
 def bestseller_list(request):
@@ -181,7 +231,7 @@ def add_publisher(request):
 
 @login_required
 def add_book(request):
-    return add_entity(request, BookForm, 'add_book.html', 'home')
+    return add_entity(request, BookForm, 'add_book.html', 'books')
 
 @login_required
 def add_bestseller(request):
