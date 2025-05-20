@@ -11,14 +11,14 @@ class BookFilter(django_filters.FilterSet):
     
     # Single accolade filter
     accolade = django_filters.ChoiceFilter(
-        choices=[('Top 5', 'Top 5'), ('Top 10', 'Top 10')],
+        choices=BestsellerAccolade.ACCOLADE_CHOICES,
         label='Bestseller Accolade',
         method='filter_by_accolade'
     )
     
     # Multiple accolades filter
     accolades = django_filters.MultipleChoiceFilter(
-        choices=[('Top 5', 'Top 5'), ('Top 10', 'Top 10')],
+        choices=BestsellerAccolade.ACCOLADE_CHOICES,
         label='Multiple Accolades',
         method='filter_by_multiple_accolades',
         widget=forms.CheckboxSelectMultiple
