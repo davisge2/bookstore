@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
-from .filters import BookFilter
+from .filters import BookFilter, AuthorFilter
 from .models import Book, Author, Publisher, BestsellerAccolade
 from django.template.loader import render_to_string
 from django.core.serializers.json import DjangoJSONEncoder
@@ -163,16 +163,88 @@ def author_list(request):
     )
 
     simple_search = request.GET.get('simple_search', '')
-    if simple_search:
-        authors = authors.filter(name__icontains=simple_search)
 
-    paginator = Paginator(authors, 20)
+    author_filter = AuthorFilter(request.GET, queryset=authors)
+    date_range_form = DateRangeForm(request.GET)
+
+    book_id = request.GET.get('book')
+    publisher_id = request.GET.get('publisher')
+    publish_date_after = request.GET.get('publish_date_after')
+    publish_date_before = request.GET.get('publish_date_before')
+    accolade = request.GET.get('accolade')
+    accolades_list = request.GET.getlist('accolades')
+
+    book_name = None
+    publisher_name = None
+
+    if book_id:
+        book_obj = Book.objects.filter(id=book_id).first()
+        if book_obj:
+            book_name = book_obj.title
+
+    if publisher_id:
+        publisher_obj = Publisher.objects.filter(id=publisher_id).first()
+        if publisher_obj:
+            publisher_name = publisher_obj.name
+
+    filtered_qs = author_filter.qs
+
+    if book_id:
+        filtered_qs = filtered_qs.filter(book__id=book_id)
+    if publisher_id:
+        filtered_qs = filtered_qs.filter(book__publisher_id=publisher_id)
+
+    if simple_search:
+        filtered_qs = filtered_qs.filter(
+            Q(name__icontains=simple_search) |
+            Q(book__title__icontains=simple_search) |
+            Q(book__publisher__name__icontains=simple_search)
+        )
+
+    if date_range_form.is_valid():
+        publish_date_after = date_range_form.cleaned_data.get('publish_date_after')
+        publish_date_before = date_range_form.cleaned_data.get('publish_date_before')
+        accolade = date_range_form.cleaned_data.get('accolade')
+        accolades = date_range_form.cleaned_data.get('accolades')
+
+        if publish_date_after:
+            filtered_qs = filtered_qs.filter(book__publish_date__gte=publish_date_after)
+        if publish_date_before:
+            filtered_qs = filtered_qs.filter(book__publish_date__lte=publish_date_before)
+        if accolade:
+            filtered_qs = filtered_qs.filter(book__bestselleraccolade__category=accolade).distinct()
+        elif accolades:
+            q_objects = Q()
+            for value in accolades:
+                q_objects |= Q(book__bestselleraccolade__category=value)
+            filtered_qs = filtered_qs.filter(q_objects).distinct()
+
+    sort_by = request.GET.get('sort_by', 'name')
+    sort_dir = request.GET.get('sort_dir', 'asc')
+    sort_field = f'-{sort_by}' if sort_dir == 'desc' else sort_by
+
+    if sort_field in ['name', '-name', 'book_count', '-book_count', 'top5_count', '-top5_count', 'top10_count', '-top10_count']:
+        filtered_qs = filtered_qs.order_by(sort_field)
+    else:
+        filtered_qs = filtered_qs.order_by('name')
+
+    paginator = Paginator(filtered_qs, 20)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     context = {
         'authors': page_obj,
         'simple_search': simple_search,
+        'book_name': book_name,
+        'publisher_name': publisher_name,
+        'sort_by': sort_by,
+        'sort_dir': sort_dir,
+        'publish_date_after': publish_date_after,
+        'publish_date_before': publish_date_before,
+        'accolade': accolade,
+        'accolades_list': accolades_list,
+        'filter': author_filter,
+        'date_range_form': date_range_form,
     }
     if request.user.is_authenticated:
         context['favorite_ids'] = list(request.user.profile.favorite_authors.values_list('id', flat=True))
@@ -182,17 +254,16 @@ def author_list(request):
         return HttpResponse(html)
 
     analytics = {
-        'total_authors': authors.count(),
-        'authors_with_top5': authors.filter(top5_count__gt=0).count(),
-        'authors_with_top10': authors.filter(top10_count__gt=0).count(),
-        'top_authors_top5': authors.filter(top5_count__gt=0).order_by('-top5_count')[:5],
-        'top_authors_top10': authors.filter(top10_count__gt=0).order_by('-top10_count')[:5],
+        'total_authors': filtered_qs.count(),
+        'authors_with_top5': filtered_qs.filter(top5_count__gt=0).count(),
+        'authors_with_top10': filtered_qs.filter(top10_count__gt=0).count(),
+        'top_authors_top5': filtered_qs.filter(top5_count__gt=0).order_by('-top5_count')[:5],
+        'top_authors_top10': filtered_qs.filter(top10_count__gt=0).order_by('-top10_count')[:5],
     }
 
-    return render(request, 'authors.html', {
-        'authors': authors,
-        'analytics': analytics,
-    })
+    context['analytics'] = analytics
+
+    return render(request, 'authors.html', context)
 
 @login_required
 def publisher_list(request):
