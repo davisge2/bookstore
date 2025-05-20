@@ -148,8 +148,7 @@ $(document).on('submit', '#author-search-form', function(e) {
     $('#author-search-btn').trigger('click');
 });
 
-
-// Remove an individual filter tag and reset pagination
+// Remove filter
 $(document).on('click', '.remove-author-filter', function(e) {
     e.preventDefault();
     const filter = $(this).data('filter');
@@ -301,13 +300,6 @@ $(document).on('click', '#authors-reset-btn', function() {
 });
 
 $(document).on('click', '#authors-reset-all-btn', function() {
-    // Clear simple search and advanced form inputs before reloading
-    $('#author-search-form input[name="simple_search"]').val('');
-    $('#author-book-select').val(null).trigger('change.select2');
-    $('#author-publisher-select').val(null).trigger('change.select2');
-    $('input[name="publish_date_after"]').val('');
-    $('input[name="publish_date_before"]').val('');
-    $('input[name="accolades"]').prop('checked', false);
     window.location.href = window.location.pathname;
 });
 
