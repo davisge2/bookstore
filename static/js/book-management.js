@@ -478,7 +478,8 @@ $(document).on('click', '#search-btn', function(e) {
  */
 $(document).on('submit', '#simple-search-form', function(e) {
     e.preventDefault();
-    performCombinedSearch();
+    // Trigger the same logic as the advanced search button so all UI elements update
+    $('#search-btn').trigger('click');
 });
 
 /**
