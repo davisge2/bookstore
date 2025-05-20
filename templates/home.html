@@ -1,5 +1,26 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load url_tags %}
+
+<style>
+  .content-container {display:flex;width:100%;gap:20px;}
+  .book-list-container {flex:3;}
+  .analytics-sidebar {flex:2;position:sticky;top:20px;height:calc(100vh - 40px);overflow-y:auto;padding-right:10px;}
+  @media (max-width: 992px){.content-container{flex-direction:column;}.analytics-sidebar{height:auto;position:static;}}
+  .mini-section{background-color:white;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.05);margin-bottom:20px;padding:15px;}
+  .mini-section-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f0f0f0;padding-bottom:10px;margin-bottom:15px;}
+  .mini-section-header h3{font-size:1rem;font-weight:600;margin:0;}
+  .mini-chart{height:200px;position:relative;}
+  .mini-kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:15px;}
+  .mini-kpi-tile{background:#f5f6fa;border-radius:8px;padding:10px;text-align:center;}
+  .mini-kpi-title{font-size:.8rem;color:#888;margin-bottom:5px;}
+  .mini-kpi-value{font-size:1.2rem;font-weight:700;color:#333;}
+  .mini-list{margin:0;padding:0;list-style:none;}
+  .mini-list li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;}
+  .mini-list li:last-child{border-bottom:none;}
+  .mini-list .name{font-weight:500;}
+  .mini-list .count{background:#6772e5;color:white;padding:2px 8px;border-radius:12px;font-size:.8rem;}
+</style>
 
 {% block content %}
 <div class="container-fluid">
@@ -192,8 +213,49 @@
 </div>
 
 
-<div id="search-results">
-    {% include 'partials/book_list.html' %}
+<div class="content-container">
+  <div class="book-list-container">
+    <div id="search-results">
+        {% include 'partials/book_list.html' %}
+    </div>
+  </div>
+  <div class="analytics-sidebar">
+    <div class="mini-section">
+        <div class="mini-section-header"><h3>Results Summary</h3></div>
+        <div class="mini-kpi-grid">
+            <div class="mini-kpi-tile">
+                <div class="mini-kpi-title">Total Books</div>
+                <div class="mini-kpi-value" id="filter-total-books">{{ books.paginator.count }}</div>
+            </div>
+            <div class="mini-kpi-tile">
+                <div class="mini-kpi-title">Top 5 Bestsellers</div>
+                <div class="mini-kpi-value" id="filter-top5">-</div>
+            </div>
+            <div class="mini-kpi-tile">
+                <div class="mini-kpi-title">Top 10 Bestsellers</div>
+                <div class="mini-kpi-value" id="filter-top10">-</div>
+            </div>
+            <div class="mini-kpi-tile">
+                <div class="mini-kpi-title">Bestseller Rate</div>
+                <div class="mini-kpi-value" id="filter-bestseller-rate">-</div>
+            </div>
+        </div>
+    </div>
+    <div class="mini-section">
+        <div class="mini-section-header"><h3>Distribution</h3></div>
+        <div class="mini-chart"><canvas id="distributionChart"></canvas></div>
+    </div>
+    <div class="mini-section">
+        <div class="mini-section-header"><h3>Top Authors</h3></div>
+        <div class="mini-chart"><canvas id="authorsChart"></canvas></div>
+        <ul class="mini-list" id="top-authors-list"></ul>
+    </div>
+    <div class="mini-section">
+        <div class="mini-section-header"><h3>Top Publishers</h3></div>
+        <div class="mini-chart"><canvas id="publishersChart"></canvas></div>
+        <ul class="mini-list" id="top-publishers-list"></ul>
+    </div>
+  </div>
 </div>
 </div>
 {% endblock %}
@@ -211,5 +273,8 @@
     // Pass sorting information to JavaScript
     window.initialSortBy = '{{ sort_by }}';
     window.initialSortDir = '{{ sort_dir }}';
+    window.analyticsUrl = '{% url "filtered_analytics" %}';
 </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="{% static 'js/analytics.js' %}"></script>
 {% endblock %}
