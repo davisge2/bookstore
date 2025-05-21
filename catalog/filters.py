@@ -1,5 +1,5 @@
 import django_filters
-from .models import Book, BestsellerAccolade
+from .models import Book, BestsellerAccolade, Author
 from django import forms
 from django.db.models import Q
 
