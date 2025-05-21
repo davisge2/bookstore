@@ -230,6 +230,9 @@ function performCombinedAuthorSearch() {
             $('#author-results').html(data);
             updateAuthorFilters(params);
             initializeAuthorPage(currentSortBy, currentSortDir);
+            if (typeof updateAuthorAnalyticsAfterSearch === 'function') {
+                updateAuthorAnalyticsAfterSearch();
+            }
             if (history.pushState) {
                 const newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname + '?' + params.toString();
                 window.history.pushState({path: newUrl}, '', newUrl);
@@ -329,6 +332,9 @@ $(document).on('click', '.pagination a', function(e) {
         success: function(data) {
             $('#author-results').html(data);
             initializeAuthorPage(currentSortBy, currentSortDir);
+            if (typeof updateAuthorAnalyticsAfterSearch === 'function') {
+                updateAuthorAnalyticsAfterSearch();
+            }
             if (history.pushState) {
                 window.history.pushState({path: url}, '', url);
             }

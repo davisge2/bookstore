@@ -643,3 +643,90 @@ def filtered_analytics(request):
     }
 
     return JsonResponse(stats)
+
+
+def get_filtered_authors(request):
+    authors = (
+        Author.objects
+        .annotate(
+            book_count=Count('book'),
+            top5_count=Count(
+                'book__bestselleraccolade',
+                filter=Q(book__bestselleraccolade__category='Top 5')
+            ),
+            top10_count=Count(
+                'book__bestselleraccolade',
+                filter=Q(book__bestselleraccolade__category='Top 10')
+            )
+        )
+    )
+
+    simple_search = request.GET.get('simple_search', '')
+    if simple_search:
+        authors = authors.filter(
+            Q(name__icontains=simple_search) |
+            Q(book__title__icontains=simple_search) |
+            Q(book__publisher__name__icontains=simple_search)
+        )
+
+    author_filter = AuthorFilter(request.GET, queryset=authors)
+    filtered_qs = author_filter.qs
+
+    book_id = request.GET.get('book')
+    publisher_id = request.GET.get('publisher')
+    publish_date_after = request.GET.get('publish_date_after')
+    publish_date_before = request.GET.get('publish_date_before')
+    accolade = request.GET.get('accolade')
+    accolades_list = request.GET.getlist('accolades')
+
+    if book_id:
+        filtered_qs = filtered_qs.filter(book__id=book_id)
+    if publisher_id:
+        filtered_qs = filtered_qs.filter(book__publisher_id=publisher_id)
+    if publish_date_after:
+        filtered_qs = filtered_qs.filter(book__publish_date__gte=publish_date_after)
+    if publish_date_before:
+        filtered_qs = filtered_qs.filter(book__publish_date__lte=publish_date_before)
+    if accolade:
+        filtered_qs = filtered_qs.filter(book__bestselleraccolade__category=accolade).distinct()
+    elif accolades_list:
+        q_objects = Q()
+        for value in accolades_list:
+            q_objects |= Q(book__bestselleraccolade__category=value)
+        filtered_qs = filtered_qs.filter(q_objects).distinct()
+
+    sort_by = request.GET.get('sort_by', 'name')
+    sort_dir = request.GET.get('sort_dir', 'asc')
+    sort_field = f'-{sort_by}' if sort_dir == 'desc' else sort_by
+
+    valid_fields = [
+        'name', '-name', 'book_count', '-book_count',
+        'top5_count', '-top5_count', 'top10_count', '-top10_count'
+    ]
+    if sort_field in valid_fields:
+        filtered_qs = filtered_qs.order_by(sort_field)
+    else:
+        filtered_qs = filtered_qs.order_by('name')
+
+    return filtered_qs
+
+
+@login_required
+def filtered_author_analytics(request):
+    filtered_authors = get_filtered_authors(request)
+
+    stats = {
+        'totalAuthors': filtered_authors.count(),
+        'authorsWithTop5': filtered_authors.filter(top5_count__gt=0).count(),
+        'authorsWithTop10': filtered_authors.filter(top10_count__gt=0).count(),
+        'topAuthorsTop5': [
+            {'name': a.name, 'count': a.top5_count}
+            for a in filtered_authors.filter(top5_count__gt=0).order_by('-top5_count')[:5]
+        ],
+        'topAuthorsTop10': [
+            {'name': a.name, 'count': a.top10_count}
+            for a in filtered_authors.filter(top10_count__gt=0).order_by('-top10_count')[:5]
+        ],
+    }
+
+    return JsonResponse(stats)

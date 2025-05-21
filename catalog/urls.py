@@ -27,4 +27,5 @@ urlpatterns = [
     path('ajax/delete-author/<int:author_id>/', views.delete_author_ajax, name='delete_author_ajax'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('analytics/', views.filtered_analytics, name='filtered_analytics'),
+    path('author-analytics/', views.filtered_author_analytics, name='filtered_author_analytics'),
 ]

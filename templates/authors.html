@@ -166,21 +166,21 @@
             <div class="mini-kpi-grid">
               <div class="mini-kpi-tile">
                 <div class="mini-kpi-title">Total Authors</div>
-                <div class="mini-kpi-value">{{ analytics.total_authors }}</div>
+                <div id="total-authors" class="mini-kpi-value">{{ analytics.total_authors }}</div>
               </div>
               <div class="mini-kpi-tile">
                 <div class="mini-kpi-title">With Top 5</div>
-                <div class="mini-kpi-value">{{ analytics.authors_with_top5 }}</div>
+                <div id="authors-with-top5" class="mini-kpi-value">{{ analytics.authors_with_top5 }}</div>
               </div>
               <div class="mini-kpi-tile">
                 <div class="mini-kpi-title">With Top 10</div>
-                <div class="mini-kpi-value">{{ analytics.authors_with_top10 }}</div>
+                <div id="authors-with-top10" class="mini-kpi-value">{{ analytics.authors_with_top10 }}</div>
               </div>
             </div>
           </div>
           <div class="mini-section">
             <div class="mini-section-header"><h3>Top Authors (Top 5)</h3></div>
-            <ul class="mini-list">
+            <ul id="top-authors-top5-list" class="mini-list">
               {% for a in analytics.top_authors_top5 %}
               <li><span class="name">{{ a.name }}</span><span class="count">{{ a.top5_count }}</span></li>
               {% empty %}
@@ -190,7 +190,7 @@
           </div>
           <div class="mini-section">
             <div class="mini-section-header"><h3>Top Authors (Top 10)</h3></div>
-            <ul class="mini-list">
+            <ul id="top-authors-top10-list" class="mini-list">
               {% for a in analytics.top_authors_top10 %}
               <li><span class="name">{{ a.name }}</span><span class="count">{{ a.top10_count }}</span></li>
               {% empty %}
@@ -213,6 +213,8 @@
     book_name: '{{ book_name }}',
     publisher_name: '{{ publisher_name }}'
   };
+  window.authorAnalyticsUrl = '{% url "filtered_author_analytics" %}';
 </script>
 <script src="{% static 'js/author-management.js' %}"></script>
+<script src="{% static 'js/author-analytics.js' %}"></script>
 {% endblock %}
