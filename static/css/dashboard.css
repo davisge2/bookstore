@@ -1,0 +1,32 @@
+/* Dashboard CSS */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+}
+
+.container {
+  margin-top: 20px;
+}
+
+.well {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #343a40;
+}
+
+.lead {
+  font-size: 1.25rem;
+  font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .well {
+    margin-bottom: 20px;
+  }
+}
