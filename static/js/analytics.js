@@ -99,3 +99,6 @@ function updatePublishersChart(data) {
     publishersChart.data.datasets[0].data = values;
     publishersChart.update();
 }
+document.addEventListener('DOMContentLoaded', function() {
+  initializeAnalytics();
+});
