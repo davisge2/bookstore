@@ -14,6 +14,8 @@ class PublisherForm(ModelForm):
 
 class BookForm(ModelForm):
     accolades = CharField(required=False)
+    author = forms.ModelChoiceField(queryset=Author.objects.all().order_by('name'))
+    publisher = forms.ModelChoiceField(queryset=Publisher.objects.all().order_by('name'))
 
     class Meta:
         model = Book
