@@ -18,7 +18,7 @@ function setupAdvancedSelect2() {
                 dataType: 'json',
                 delay: 250,
                 data: params => ({q: params.term}),
-                processResults: data => ({results: data}),
+processResults: data => ({results: data.sort((a, b) => a.text.localeCompare(b.text))})
                 minimumInputLength: 2
             }
         });
@@ -32,7 +32,7 @@ function setupAdvancedSelect2() {
                 dataType: 'json',
                 delay: 250,
                 data: params => ({q: params.term}),
-                processResults: data => ({results: data}),
+processResults: data => ({results: data.sort((a, b) => a.text.localeCompare(b.text))})
                 minimumInputLength: 2
             }
         });
