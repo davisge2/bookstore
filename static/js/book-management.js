@@ -32,28 +32,28 @@ function initializeAll(sortBy, sortDir) {
 function initializeSelect2Components() {
     // Only initialize if not already initialized
     if (!$('#author-select-modal').hasClass('select2-hidden-accessible')) {
-        $('#author-select-modal').select2({
+        $('#author-select-modal').select2({ sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
             placeholder: 'Search authors...',
-            ajax: {
+            sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), ajax: {
                 url: '/ajax/search-authors/',
                 dataType: 'json',
                 delay: 250,
                 data: params => ({q: params.term}),
-                processResults: data => ({ results: data }),
+processResults: data => ({ results: data.sort((a, b) => a.text.localeCompare(b.text)) })
                 minimumInputLength: 2
             }
         });
     }
     
     if (!$('#publisher-select-modal').hasClass('select2-hidden-accessible')) {
-        $('#publisher-select-modal').select2({
+        $('#publisher-select-modal').select2({ sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
             placeholder: 'Search publishers...',
             ajax: {
                 url: '/ajax/search-publishers/',
                 dataType: 'json',
                 delay: 250,
                 data: params => ({q: params.term}),
-                processResults: data => ({ results: data }),
+processResults: data => ({ results: data.sort((a, b) => a.text.localeCompare(b.text)) })
                 minimumInputLength: 2
             }
         });
@@ -65,7 +65,7 @@ function initializeSelect2Components() {
             ajax: {
                 url: '/ajax/get-accolades/',
                 dataType: 'json',
-                processResults: data => ({ results: data }),
+processResults: data => ({ results: data.sort((a, b) => a.text.localeCompare(b.text)) })
             },
             tags: true, // allows creating new items
             tokenSeparators: [',']
@@ -107,7 +107,7 @@ function setupSelect2(id, url, extraDataCallback) {
                 }
                 return data;
             },
-            processResults: function(data) {
+processResults: data => ({ results: data.sort((a, b) => a.text.localeCompare(b.text)) })
                 return { results: data };
             }
         }
@@ -205,10 +205,10 @@ $(document).on('submit', '#book-form', function(e) {
         url: url,
         method: 'POST',
         data: formData,
-        headers: {'X-CSRFToken': getCsrfToken()},
+        headers: {'X-CSRFToken': getCsrfToken()}, sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
         success: function() {
             window.location.reload();
-        },
+        }, sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
         error: function(response) {
             alert('Error: ' + JSON.stringify(response.responseJSON.errors));
         }
@@ -231,7 +231,7 @@ $(document).on('click', '.btn-delete-book', function(e) {
             method: 'POST',
             headers: {
                 'X-CSRFToken': getCsrfToken()
-            },
+            }, sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
             success: function(response) {
                 // Show success message
                 alert(response.message);
@@ -240,7 +240,7 @@ $(document).on('click', '.btn-delete-book', function(e) {
                 $(e.target).closest('tr').fadeOut(300, function() {
                     $(this).remove();
                 });
-            },
+            }, sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
             error: function(xhr) {
                 let errorMessage = 'An error occurred while deleting the book.';
                 if (xhr.responseJSON && xhr.responseJSON.message) {
@@ -262,7 +262,7 @@ $(document).on('click', '.btn-favorite-book', function(e) {
     $.ajax({
         url: `/accounts/favorite/${bookId}/`,
         method: 'POST',
-        headers: { 'X-CSRFToken': getCsrfToken() },
+        headers: { 'X-CSRFToken': getCsrfToken() }, sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
         success: function(data) {
             const icon = btn.find('i');
             if (data.action === 'added') {
@@ -286,10 +286,10 @@ $(document).on('click', '.btn-remove-favorite', function(e) {
         $.ajax({
             url: `/accounts/favorite/${bookId}/`,
             method: 'POST',
-            headers: { 'X-CSRFToken': getCsrfToken() },
+            headers: { 'X-CSRFToken': getCsrfToken() }, sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
             success: function() {
                 btn.closest('tr').fadeOut(300, function() { $(this).remove(); });
-            },
+            }, sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
             error: function() {
                 alert('Error removing favorite.');
             }
@@ -348,7 +348,7 @@ function performCombinedSearch() {
         url: window.location.pathname,
         type: 'get',
         data: searchParams.toString(),
-        headers: { "X-Requested-With": "XMLHttpRequest" },
+        headers: { "X-Requested-With": "XMLHttpRequest" }, sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
         success: function(data) {
             // Update the search results
             $('#search-results').html(data);
@@ -357,7 +357,7 @@ function performCombinedSearch() {
             if (history.pushState) {
                 const newUrl = window.location.protocol + "//" + window.location.host + 
                               window.location.pathname + '?' + searchParams.toString();
-                window.history.pushState({path: newUrl}, '', newUrl);
+                window.history.pushState({path: newUrl}, sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), '', newUrl);
                 
                 // NEW CODE: Update active filters section
                 updateActiveFilters(searchParams);
@@ -368,7 +368,7 @@ function performCombinedSearch() {
                     updateAnalyticsAfterSearch();
                 }
             }
-        },
+        }, sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
         error: function() {
             alert("Error retrieving search results.");
         }
@@ -573,7 +573,7 @@ $(document).ready(function() {
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(function() {
             performCombinedSearch();
-        }, 500); // Wait 500ms after typing stops
+        }, sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), 500); // Wait 500ms after typing stops
     });
 });
 
@@ -651,7 +651,7 @@ $(document).on('click', '.pagination a', function(e) {
     $.ajax({
         url: url,
         type: 'get',
-        headers: { "X-Requested-With": "XMLHttpRequest" },
+        headers: { "X-Requested-With": "XMLHttpRequest" }, sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
         success: function(data) {
             $('#search-results').html(data);
             
@@ -663,9 +663,9 @@ $(document).on('click', '.pagination a', function(e) {
             
             // Update URL without page reload
             if (history.pushState) {
-                window.history.pushState({path: url}, '', url);
+                window.history.pushState({path: url}, sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), '', url);
             }
-        },
+        }, sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
         error: function() {
             alert("Pagination error.");
         }
