@@ -397,6 +397,7 @@ def ajax_search_authors(request):
     publisher_id = request.GET.get('publisher')
 
     authors = Author.objects.filter(name__icontains=q)
+    authors = authors.order_by("name")
 
     if book_id:
         authors = authors.filter(book__id=book_id)
@@ -414,6 +415,7 @@ def ajax_search_publishers(request):
     author_id = request.GET.get('author')
 
     publishers = Publisher.objects.filter(name__icontains=q)
+    publishers = publishers.order_by("name")
 
     if book_id:
         publishers = publishers.filter(book__id=book_id)
