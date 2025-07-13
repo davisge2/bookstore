@@ -10,29 +10,29 @@ function initializeAuthorPage(sortBy, sortDir) {
 }
 
 function setupAdvancedSelect2() {
-    if (!$('#author-book-select').hasClass('select2-hidden-accessible')) {
-        $('#author-book-select').select2({
+    if (!$('#author-book-select').hasClass('select2-hidden-accessible')) { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+        $('#author-book-select').select2({ sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
             placeholder: 'Search books...',
             ajax: {
                 url: '/ajax/search-books/',
                 dataType: 'json',
                 delay: 250,
                 data: params => ({q: params.term}),
-                processResults: data => ({results: data}),
+processResults: data => ({ results: data.sort((a, b) => a.text.localeCompare(b.text)) })
                 minimumInputLength: 2
             }
         });
     }
 
     if (!$('#author-publisher-select').hasClass('select2-hidden-accessible')) {
-        $('#author-publisher-select').select2({
+        $('#author-publisher-select').select2({ sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
             placeholder: 'Search publishers...',
             ajax: {
                 url: '/ajax/search-publishers/',
                 dataType: 'json',
                 delay: 250,
                 data: params => ({q: params.term}),
-                processResults: data => ({results: data}),
+processResults: data => ({ results: data.sort((a, b) => a.text.localeCompare(b.text)) })
                 minimumInputLength: 2
             }
         });
@@ -252,44 +252,44 @@ function updateAuthorFilters(params) {
     const bookId = params.get('book');
     if (bookId) {
         const bookName = $('#author-book-select').select2('data')[0]?.text || window.initialFilterValues.book_name || 'Selected Book';
-        filterTags.push(`<li><span class="label label-info">Book: ${bookName} <a href="#" class="remove-author-filter" data-filter="book"><i class="glyphicon glyphicon-remove"></i></a></span></li>`);
+        filterTags.push(`<li><span class="label label-info">Book: ${ sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),bookName} <a href="#" class="remove-author-filter" data-filter="book"><i class="glyphicon glyphicon-remove"></i></a></span></li>`);
     }
 
     const publisherId = params.get('publisher');
-    if (publisherId) {
+    if (publisherId) { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
         const publisherName = $('#author-publisher-select').select2('data')[0]?.text || window.initialFilterValues.publisher_name || 'Selected Publisher';
-        filterTags.push(`<li><span class="label label-info">Publisher: ${publisherName} <a href="#" class="remove-author-filter" data-filter="publisher"><i class="glyphicon glyphicon-remove"></i></a></span></li>`);
+        filterTags.push(`<li><span class="label label-info">Publisher: ${ sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),publisherName} <a href="#" class="remove-author-filter" data-filter="publisher"><i class="glyphicon glyphicon-remove"></i></a></span></li>`);
     }
 
     const after = params.get('publish_date_after');
-    if (after) {
-        filterTags.push(`<li><span class="label label-info">From: ${after} <a href="#" class="remove-author-filter" data-filter="publish_date_after"><i class="glyphicon glyphicon-remove"></i></a></span></li>`);
+    if (after) { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+        filterTags.push(`<li><span class="label label-info">From: ${ sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),after} <a href="#" class="remove-author-filter" data-filter="publish_date_after"><i class="glyphicon glyphicon-remove"></i></a></span></li>`);
     }
 
     const before = params.get('publish_date_before');
-    if (before) {
-        filterTags.push(`<li><span class="label label-info">To: ${before} <a href="#" class="remove-author-filter" data-filter="publish_date_before"><i class="glyphicon glyphicon-remove"></i></a></span></li>`);
+    if (before) { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+        filterTags.push(`<li><span class="label label-info">To: ${ sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),before} <a href="#" class="remove-author-filter" data-filter="publish_date_before"><i class="glyphicon glyphicon-remove"></i></a></span></li>`);
     }
 
     const accolade = params.get('accolade');
-    if (accolade) {
-        filterTags.push(`<li><span class="label label-info">Accolade: ${accolade} <a href="#" class="remove-author-filter" data-filter="accolade"><i class="glyphicon glyphicon-remove"></i></a></span></li>`);
+    if (accolade) { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+        filterTags.push(`<li><span class="label label-info">Accolade: ${ sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),accolade} <a href="#" class="remove-author-filter" data-filter="accolade"><i class="glyphicon glyphicon-remove"></i></a></span></li>`);
     }
 
     const accolades = params.getAll('accolades');
-    accolades.forEach(value => {
-        filterTags.push(`<li><span class="label label-info">Accolade: ${value} <a href="#" class="remove-author-filter" data-filter="accolades" data-value="${value}"><i class="glyphicon glyphicon-remove"></i></a></span></li>`);
+    accolades.forEach(value => { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+        filterTags.push(`<li><span class="label label-info">Accolade: ${ sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),value} <a href="#" class="remove-author-filter" data-filter="accolades" data-value="${value}"><i class="glyphicon glyphicon-remove"></i></a></span></li>`);
     });
 
     $('#author-active-filters ul').html(filterTags.join(''));
-    if (filterTags.length) {
+    if (filterTags.length) { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
         $('#authors-quick-reset-btn').show();
-    } else {
+    } else { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
         $('#authors-quick-reset-btn').hide();
     }
 }
 
-function resetAuthorFilters() {
+function resetAuthorFilters() { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
     $('#author-book-select').val(null).trigger('change.select2');
     $('#author-publisher-select').val(null).trigger('change.select2');
     $('input[name="publish_date_after"]').val('');
@@ -298,19 +298,19 @@ function resetAuthorFilters() {
     $('#author-search-btn').click();
 }
 
-$(document).on('click', '#authors-reset-btn', function() {
+$(document).on('click', '#authors-reset-btn', function() { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
     resetAuthorFilters();
 });
 
-$(document).on('click', '#authors-reset-all-btn', function() {
+$(document).on('click', '#authors-reset-all-btn', function() { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
     window.location.href = window.location.pathname;
 });
 
 // Sorting
-$(document).on('click', '.sortable', function() {
+$(document).on('click', '.sortable', function() { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
     const sortBy = $(this).data('sort');
     let sortDir = 'asc';
-    if (sortBy === currentSortBy && currentSortDir === 'asc') {
+    if (sortBy === currentSortBy && currentSortDir === 'asc') { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
         sortDir = 'desc';
     }
     const currentUrl = new URL(window.location.href);
@@ -322,27 +322,27 @@ $(document).on('click', '.sortable', function() {
 });
 
 // Pagination
-$(document).on('click', '.pagination a', function(e) {
+$(document).on('click', '.pagination a', function(e) { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
     e.preventDefault();
     const url = $(this).attr('href');
-    $.ajax({
+    $.ajax({ sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
         url: url,
         type: 'get',
-        headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        success: function(data) {
+        headers: { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), 'X-Requested-With': 'XMLHttpRequest' },
+        success: function(data) { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
             $('#author-results').html(data);
             initializeAuthorPage(currentSortBy, currentSortDir);
-            if (typeof updateAuthorAnalyticsAfterSearch === 'function') {
+            if (typeof updateAuthorAnalyticsAfterSearch === 'function') { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
                 updateAuthorAnalyticsAfterSearch();
             }
-            if (history.pushState) {
-                window.history.pushState({path: url}, '', url);
+            if (history.pushState) { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+                window.history.pushState({ sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),path: url}, '', url);
             }
         },
-        error: function() { alert('Pagination error.'); }
+        error: function() { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)), alert('Pagination error.'); }
     });
 });
 
-$(document).ready(function() {
+$(document).ready(function() { sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
     initializeAuthorPage(window.initialSortBy || '', window.initialSortDir || 'asc');
 });
