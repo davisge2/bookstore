@@ -404,6 +404,7 @@ def ajax_search_authors(request):
         authors = authors.filter(book__publisher_id=publisher_id)
 
     authors = authors.distinct().values('id', 'name')[:20]
+    authors = authors.order_by("name")
     return JsonResponse([{'id': item['id'], 'text': item['name']} for item in authors], safe=False)
 
 
@@ -421,6 +422,7 @@ def ajax_search_publishers(request):
         publishers = publishers.filter(book__author_id=author_id)
 
     publishers = publishers.distinct().values('id', 'name')[:20]
+    publishers = publishers.order_by("name")
     return JsonResponse([{'id': item['id'], 'text': item['name']} for item in publishers], safe=False)
 
 
